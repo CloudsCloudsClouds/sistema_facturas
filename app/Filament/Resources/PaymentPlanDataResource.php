@@ -32,7 +32,8 @@ class PaymentPlanDataResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('administration')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->regex('^\d{2}/[12]$'),
                 Forms\Components\TextInput::make('name')
                     ->maxLength(255)
                     ->default(null),

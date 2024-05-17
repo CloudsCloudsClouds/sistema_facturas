@@ -35,7 +35,8 @@ class ManagementResource extends Resource
                     ->searchable(),
                 Forms\Components\TextInput::make('management')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->regex('^\d{2}/[12]$'),
             ]);
     }
 
