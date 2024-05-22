@@ -21,6 +21,8 @@ Este proyecto usa filament! Es para hacer datos y todo mas rapido.
 Ingresa el usuario que acabas de crear. 
 El sistema funciona. 
 
+Modificacion de esteban
+
 ¡Comenta cualquier cosa que no funcione!
 
 - ¡Lee el error! Tu puedes resolver el 99% de los problemas si lees el error
