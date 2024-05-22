@@ -26,3 +26,5 @@ El sistema funciona.
 - ¡Lee el error! Tu puedes resolver el 99% de los problemas si lees el error
     - Identifica si el error es un problema de tu instalacion de php/composer, o si es un problema del proyecto
     - Si es un problema de tu instalacion, corregi. Si es un problema del proyecto, crea un 'Issue' en la pestaña al lado de 'code'
+
+Modificacion de Karen.
