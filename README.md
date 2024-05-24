@@ -18,8 +18,8 @@ Este proyecto usa filament! Es para hacer datos y todo mas rapido.
 - Corre `php artisan serve`
 - Ve al link `localhost:8000/admin`
 
-Ingresa el usuario queacabas de crear. 
-El sistema funciona. 
+Ingresa el usuario que acabas de crear. 
+El sistema (deberia) funciona. 
 
 ### ¡Sobre la base de datos!
 Ya hay algunos factories and seeders puestos en marcha para crear algunos datos.
