@@ -47,9 +47,9 @@ class StudentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('person_id.ci')
+                Tables\Columns\TextColumn::make('person.ci')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('management_id.career_id.name')
+                Tables\Columns\TextColumn::make('management.career.name')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),

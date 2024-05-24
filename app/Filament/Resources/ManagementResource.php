@@ -43,7 +43,7 @@ class ManagementResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('career_id')
+                Tables\Columns\TextColumn::make('career.name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('payment_plan_id')
