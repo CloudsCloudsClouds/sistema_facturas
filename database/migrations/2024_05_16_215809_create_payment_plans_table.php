@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('payment_plans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('management_id')->constrained('managements')->cascadeOnDelete();
             $table->unsignedInteger('tuition');
             $table->unsignedTinyInteger('credit');
             $table->timestamps();

@@ -14,9 +14,12 @@ return new class extends Migration
         Schema::create('management', function (Blueprint $table) {
             $table->id();
             $table->foreignId('career_id')->constrained('careers')->cascadeOnDelete();
-            $table->foreignID('payment_plan_id')->constrained('payment_plans')->cascadeOnDelete();
+            $table->foreignId('payment_plan_id')->constrained('payment_plans')->cascadeOnDelete();
             $table->string('management');
             $table->timestamps();
+        });
+        Schema::table('payment_plans', function (Blueprint $table) {
+            $table->foreignId('management_id')->constrained('management')->cascadeOnDelete();
         });
     }
 
