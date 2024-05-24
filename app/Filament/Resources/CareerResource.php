@@ -49,9 +49,8 @@ class CareerResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('campus_id')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('campus_id.name')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('duration')
