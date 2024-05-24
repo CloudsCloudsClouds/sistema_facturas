@@ -24,10 +24,13 @@ El sistema funciona.
 ### ¡Sobre la base de datos!
 Ya hay algunos factories and seeders puestos en marcha para crear algunos datos.
 Debes correr:
-    - `php artisan db:seed`
+    
+`php artisan db:seed`
+
 Y creara automaticamente varios datos.
 Puedes borrarlo todo corriento.
-    - `php artisan migrate:fresh`
+
+`php artisan migrate:fresh`
 
 Modificacion de esteban
 
