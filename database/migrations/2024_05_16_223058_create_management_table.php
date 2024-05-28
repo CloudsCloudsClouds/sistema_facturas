@@ -18,9 +18,6 @@ return new class extends Migration
             $table->string('management');
             $table->timestamps();
         });
-        Schema::table('payment_plans', function (Blueprint $table) {
-            $table->foreignId('management_id')->constrained('management')->cascadeOnDelete();
-        });
     }
 
     /**

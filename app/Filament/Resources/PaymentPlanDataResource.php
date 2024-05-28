@@ -28,12 +28,16 @@ class PaymentPlanDataResource extends Resource
                     ->required()
                     ->options(PaymentPlan::all()->pluck('id', 'id'))
                     ->searchable(),
-                Forms\Components\TextInput::make('type')
+                Forms\Components\Select::make('type')
+                    ->options([
+                        'course' => 'Curso',
+                        'credit' => 'Credito'
+                    ])
                     ->required(),
                 Forms\Components\TextInput::make('administration')
                     ->required()
                     ->maxLength(255)
-                    ->regex('^\d{2}/[12]$'),
+                    ->regex('^\d{2}/[12]$^'),
                 Forms\Components\TextInput::make('name')
                     ->maxLength(255)
                     ->default(null),
