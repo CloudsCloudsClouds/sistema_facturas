@@ -24,9 +24,11 @@ class PaymentPlanResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('tuition')
+                ->label('Matricula')
                     ->required()
                     ->numeric(),
                 Forms\Components\TextInput::make('credit')
+                ->label('Credito')
                     ->required()
                     ->numeric(),
             ]);

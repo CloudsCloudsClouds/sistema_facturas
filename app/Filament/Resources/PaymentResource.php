@@ -26,14 +26,17 @@ class PaymentResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('student_id')
+                ->label('Estudiante')
                     ->required()
                     ->options(Student::all()->pluck('code', 'id'))
                     ->searchable(),
                 Forms\Components\Select::make('payment_plan_data_id')
+                ->label('Datos de Plan de Pago')
                     ->required()
                     ->options(PaymentPlanData::all()->pluck('id', 'id'))
                     ->searchable(),
                 Forms\Components\TextInput::make('ammount_payed')
+                ->label('Monto de Pago')
                     ->required()
                     ->numeric(),
                 Forms\Components\DatePicker::make('date')

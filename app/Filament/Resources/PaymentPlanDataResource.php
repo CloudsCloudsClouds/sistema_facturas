@@ -25,20 +25,24 @@ class PaymentPlanDataResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('payment_plan_id')
+                ->label('Plan de Pago')
                     ->required()
                     ->options(PaymentPlan::all()->pluck('id', 'id'))
                     ->searchable(),
                 Forms\Components\Select::make('type')
+                ->label('Tipo de pago')
                     ->options([
                         'course' => 'Curso',
                         'credit' => 'Credito'
                     ])
                     ->required(),
                 Forms\Components\TextInput::make('administration')
+                ->label('Administrador')
                     ->required()
                     ->maxLength(255)
                     ->regex('^\d{2}/[12]$^'),
                 Forms\Components\TextInput::make('name')
+                ->label('Nombre')
                     ->maxLength(255)
                     ->default(null),
             ]);

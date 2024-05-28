@@ -24,21 +24,27 @@ class BillResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('paid_ammount')
+                ->label('Monto de pago')
                     ->required()
                     ->numeric(),
                 Forms\Components\TextInput::make('change')
+                ->label('Cambio')
                     ->required()
                     ->numeric(),
                 Forms\Components\TextInput::make('nit')
+                ->label('NIT')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('social_reason')
+                ->label('Razon Social')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('bill_code')
+                ->label('Codigo de Factura')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('type_of_payment')
+                ->label('Forma de Pago')
                     ->required(),
             ]);
     }
@@ -48,18 +54,23 @@ class BillResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('paid_ammount')
+                ->label('Monto de pago')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('change')
+                ->label('Cambio')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('nit')
+                ->label('NIT')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('social_reason')
+                ->label('Razon Social')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('bill_code')
+                ->label('Codigo de Factura')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('type_of_payment'),
+                Tables\Columns\TextColumn::make('type_of_payment')->label('Forma de Pago'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

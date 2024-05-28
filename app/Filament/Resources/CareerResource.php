@@ -25,16 +25,20 @@ class CareerResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('campus_id')
+                ->label('Nombre de sede')
                     ->required()
                     ->options(Campus::all()->pluck('name', 'id'))
                     ->searchable(),
                 Forms\Components\TextInput::make('name')
+                ->label('Nombre de carrera')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('duration')
+                ->label('Duracion')
                     ->required()
                     ->numeric(),
                 Forms\Components\TextInput::make('number')
+                ->label('Numero')
                     ->tel()
                     ->maxLength(255)
                     ->default(null),
@@ -50,13 +54,17 @@ class CareerResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('campus_id.name')
+                ->label('ID de campus')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('name')
+                ->label('Nombre de carrera')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('duration')
+                ->label('Duracion')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('number')
+                ->label('Numero')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
