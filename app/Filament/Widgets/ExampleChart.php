@@ -9,7 +9,7 @@ use Flowframe\Trend\TrendValue;
 
 class ExampleChart extends ChartWidget
 {
-    protected static ?string $heading = 'Chart';
+    protected static ?string $heading = 'Año';
 
     protected function getData(): array
     {
@@ -23,7 +23,7 @@ class ExampleChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => __('Dashboard.BillChartLabel'),
+                    'label' => __('Gestiones'),
                     'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
                 ],
             ],

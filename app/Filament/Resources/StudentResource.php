@@ -26,10 +26,12 @@ class StudentResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('person_id')
+                ->label('Persona Id')
                     ->required()
                     ->options(Person::all()->pluck('ci', 'id'))
                     ->searchable(),
                 Forms\Components\Select::make('management_id')
+                ->label('Identificador')
                     ->required()
                     ->options(Management::all()->pluck('management', 'id'))
                     ->searchable(),
@@ -38,6 +40,7 @@ class StudentResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('code')
+                ->label('Codigo')
                     ->required()
                     ->maxLength(255),
             ]);
