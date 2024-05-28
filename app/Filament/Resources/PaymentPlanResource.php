@@ -29,10 +29,6 @@ class PaymentPlanResource extends Resource
                 Forms\Components\TextInput::make('credit')
                     ->required()
                     ->numeric(),
-                Forms\Components\Select::make('management_id')
-                    ->relationship('management', 'id')
-                    ->searchable()
-                    ->required(),
             ]);
     }
 
@@ -54,9 +50,6 @@ class PaymentPlanResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('management.management')
-                    ->sortable()
-                    ->searchable(),
             ])
             ->filters([
                 //
