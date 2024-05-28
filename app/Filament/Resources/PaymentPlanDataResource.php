@@ -28,7 +28,11 @@ class PaymentPlanDataResource extends Resource
                     ->required()
                     ->options(PaymentPlan::all()->pluck('id', 'id'))
                     ->searchable(),
-                Forms\Components\TextInput::make('type')
+                Forms\Components\Select::make('type')
+                    ->options([
+                        'Curso' => 'course',
+                        'Credito' => 'credit'
+                    ])
                     ->required(),
                 Forms\Components\TextInput::make('administration')
                     ->required()
