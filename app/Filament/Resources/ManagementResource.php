@@ -35,7 +35,8 @@ class ManagementResource extends Resource
                     ->searchable(),
                 Forms\Components\TextInput::make('management')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->regex('^\d{2}/[12]$^'),
             ]);
     }
 
@@ -43,10 +44,10 @@ class ManagementResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('career.name')
+                Tables\Columns\TextColumn::make('career_id.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('payment_plan_id')
+                Tables\Columns\TextColumn::make('payment_plan_id.name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('management')
