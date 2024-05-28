@@ -30,8 +30,8 @@ class PaymentPlanDataResource extends Resource
                     ->searchable(),
                 Forms\Components\Select::make('type')
                     ->options([
-                        'Curso' => 'course',
-                        'Credito' => 'credit'
+                        'course' => 'Curso',
+                        'credit' => 'Credito'
                     ])
                     ->required(),
                 Forms\Components\TextInput::make('administration')
