@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class PaymentPlanResource extends Resource
 {
     protected static ?string $model = PaymentPlan::class;
+    protected static ?string $navigationLabel = 'Plan de pagos';
 
     protected static ?string $navigationIcon = 'heroicon-o-wallet';
 

@@ -20,6 +20,7 @@ class ManagementResource extends Resource
     protected static ?string $model = Management::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-paper-clip';
+    protected static ?string $navigationLabel = 'Administracion';
 
     public static function form(Form $form): Form
     {
