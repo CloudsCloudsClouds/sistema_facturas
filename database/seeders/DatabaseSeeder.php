@@ -8,6 +8,7 @@ use App\Models\Campus;
 use App\Models\Career;
 use App\Models\Person;
 use App\Models\Student;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -24,6 +25,7 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         Person::factory(250)->create();
+        User::factory(1)->create();
         Campus::factory(1)->create();
         Career::factory(1)->create();
     }
