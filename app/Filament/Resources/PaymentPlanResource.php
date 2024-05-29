@@ -16,21 +16,24 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class PaymentPlanResource extends Resource
 {
     protected static ?string $model = PaymentPlan::class;
-    protected static ?string $navigationLabel = 'Plan de pagos';
 
-    protected static ?string $navigationIcon = 'heroicon-o-wallet';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('tuition')
-                ->label('Matricula')
+                Forms\Components\TextInput::make('plan_for')
+                    ->label('Plan para la carrera')
                     ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('tuition')
+                    ->required()
+                    ->label('Matricula')
                     ->numeric(),
                 Forms\Components\TextInput::make('credit')
-                ->label('Credito')
                     ->required()
+                    ->label('Creditos')
                     ->numeric(),
             ]);
     }
@@ -39,6 +42,8 @@ class PaymentPlanResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('plan_for')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('tuition')
                     ->numeric()
                     ->sortable(),
