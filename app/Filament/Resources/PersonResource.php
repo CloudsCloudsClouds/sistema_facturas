@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class PersonResource extends Resource
 {
     protected static ?string $model = Person::class;
+    protected static ?string $navigationLabel = 'Personas';
 
     protected static ?string $navigationIcon = 'heroicon-o-user';
 
@@ -24,22 +25,28 @@ class PersonResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('first_name')
+                ->label('Nombre')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('second_name')
+                ->label('segundo nombre')
                     ->maxLength(255)
                     ->default(null),
                 Forms\Components\TextInput::make('middle_name')
+                ->label('Apellido paterno')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('last_name')
+                ->label('Apellido materno')
                     ->maxLength(255)
                     ->default(null),
                 Forms\Components\TextInput::make('number')
+                ->label('Numero')
                     ->required()
                     ->tel()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('direction')
+                ->label('Direccion')
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('email')
@@ -47,6 +54,7 @@ class PersonResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('ci')
+                ->label('Numero de carnet')
                     ->required()
                     ->maxLength(10),
             ]);
@@ -57,19 +65,19 @@ class PersonResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('first_name')
-                ->label('Primer Nombre')
+                    ->label('Primer Nombre')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('second_name')
-                ->label('Segundo Nombre')
+                    ->label('Segundo Nombre')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('middle_name')
-                ->label('Apellido Paterno')
+                    ->label('Apellido Paterno')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('last_name')
-                ->label('Apellido Materno')
+                    ->label('Apellido Materno')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('number')
-                ->label('Numero')
+                    ->label('Numero')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                 ->label('Email')
