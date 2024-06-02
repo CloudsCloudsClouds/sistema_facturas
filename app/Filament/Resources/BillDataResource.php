@@ -20,17 +20,23 @@ class BillDataResource extends Resource
     protected static ?string $model = BillData::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
+<<<<<<< HEAD
     protected static ?string $navigationLabel = 'Dato factura';
+=======
+    protected static ?string $navigationLabel = 'Datos de Factura';
+>>>>>>> 149a63a3885393b77214f3f000c231cdc5d1286f
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Select::make('payment_id')
+                ->label('id de pago')
                     ->required()
                     ->options(Payment::all()->pluck('id'. 'id'))
                     ->searchable(),
                 Forms\Components\Select::make('bill_data')
+                ->label('Datos de Factura')
                     ->required()
                     ->options(Bill::all()->pluck('bill_code', 'id'))
                     ->searchable(),
@@ -42,9 +48,11 @@ class BillDataResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('payment_id')
+                ->label('Id de pago')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('bill_data')
+                ->label('Datos de factura')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

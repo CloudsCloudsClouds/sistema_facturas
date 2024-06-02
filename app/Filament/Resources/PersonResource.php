@@ -57,16 +57,22 @@ class PersonResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('first_name')
+                ->label('Primer Nombre')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('second_name')
+                ->label('Segundo Nombre')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('middle_name')
+                ->label('Apellido Paterno')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('last_name')
+                ->label('Apellido Materno')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('number')
+                ->label('Numero')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                ->label('Email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

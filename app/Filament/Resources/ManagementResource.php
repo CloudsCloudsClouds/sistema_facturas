@@ -26,14 +26,17 @@ class ManagementResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('career_id')
+                ->label('Carrea id')
                     ->required()
                     ->options(Career::all()->pluck('name', 'id'))
                     ->searchable(),
                 Forms\Components\Select::make('payment_plan_id')
+                ->label('Plan de Pago')
                     ->required()
                     ->options(PaymentPlan::all()->pluck('tuition', 'id'))
                     ->searchable(),
                 Forms\Components\TextInput::make('management')
+                ->label('Identificador')
                     ->required()
                     ->maxLength(255)
                     ->regex('^\d{2}/[12]$^'),
@@ -45,12 +48,15 @@ class ManagementResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('career_id.name')
+                ->label('Carrea e ID')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('payment_plan_id.name')
+                ->label('Plan de pago e ID')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('management')
+                ->label('Identificador')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

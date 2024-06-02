@@ -24,16 +24,20 @@ class CampusResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                ->label('Nombre de Sede')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('direction')
+                ->label('Direcion')
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('number')
+                ->label('Numero')
                     ->tel()
                     ->maxLength(255)
                     ->default(null),
                 Forms\Components\TextInput::make('email')
+                ->label('Email')
                     ->email()
                     ->required()
                     ->maxLength(255),
@@ -45,8 +49,10 @@ class CampusResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                ->label('Nombre de Sede')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('number')
+                ->label('Numero')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
