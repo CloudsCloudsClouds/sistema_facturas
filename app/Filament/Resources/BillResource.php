@@ -6,6 +6,7 @@ use App\Filament\Resources\BillResource\Pages;
 use App\Filament\Resources\BillResource\RelationManagers;
 use App\Models\Bill;
 use Filament\Forms;
+use Filament\Forms\Components\Wizard;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -24,29 +25,17 @@ class BillResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('paid_ammount')
-                ->label('Monto de pago')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('change')
-                ->label('Cambio')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('nit')
-                ->label('NIT')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('social_reason')
-                ->label('Razon Social')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('bill_code')
-                ->label('Codigo de Factura')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('type_of_payment')
-                ->label('Forma de Pago')
-                    ->required(),
+                Wizard::make([
+                    Wizard\Step::make('Seleccionar estudiante')
+                        ->schema([
+
+                        ]),
+                    Wizard\Step::make('Seleccionar pago')
+                        ->schema([
+
+                        ]),
+                    Wizard\Step::make('Seleccionar monto')
+                ])
             ]);
     }
 
