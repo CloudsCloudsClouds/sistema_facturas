@@ -20,7 +20,11 @@ class BillDataResource extends Resource
     protected static ?string $model = BillData::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
+<<<<<<< HEAD
+    protected static ?string $navigationLabel = 'Dato factura';
+=======
     protected static ?string $navigationLabel = 'Datos de Factura';
+>>>>>>> 149a63a3885393b77214f3f000c231cdc5d1286f
 
     public static function form(Form $form): Form
     {

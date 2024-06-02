@@ -20,4 +20,6 @@ export default {
             '5xl': '3.0rem',
         }
     }
+
+    
 }
