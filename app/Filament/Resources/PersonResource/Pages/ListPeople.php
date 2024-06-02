@@ -20,7 +20,7 @@ class ListPeople extends ListRecords
             Actions\CreateAction::make(),
             
             Action::make('createPDF')
-                
+
                 ->label('Reporte de personas')
                 ->color('warning')
                 //->requiresConfirmation()
