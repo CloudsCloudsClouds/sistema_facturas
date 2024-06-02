@@ -18,7 +18,17 @@ class BillResource extends Resource
     protected static ?string $model = Bill::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
+    protected static ?string $navigationNavigation = 'heroicon-o-clipboard-document-check';
 
+    protected static ?string $label = 'Recurso factura'; // Cambia el label
+
+    protected static ?string $pluralLabel = 'Recurso factura'; // Cambia el plural label
+
+
+
+
+
+    
     public static function form(Form $form): Form
     {
         return $form
