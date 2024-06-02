@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\BillResource\Pages;
 use App\Filament\Resources\BillResource\RelationManagers;
 use App\Models\Bill;
+use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Form;
@@ -14,6 +15,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
+use function PHPSTORM_META\map;
+
 class BillResource extends Resource
 {
     protected static ?string $model = Bill::class;
@@ -21,12 +24,9 @@ class BillResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
     protected static ?string $navigationNavigation = 'heroicon-o-clipboard-document-check';
 
-    protected static ?string $label = 'Recurso factura'; // Cambia el label
+    protected static ?string $label = 'Recurso factura'; 
 
-    protected static ?string $pluralLabel = 'Recurso factura'; // Cambia el plural label
-
-
-
+    protected static ?string $pluralLabel = 'Recurso factura'; 
 
 
     
@@ -37,13 +37,43 @@ class BillResource extends Resource
                 Wizard::make([
                     Wizard\Step::make('Seleccionar estudiante')
                         ->schema([
-
+                            Forms\Components\Select::make('student_id')
+                                //->options(Student::all()->pluck('id', 'code'))
+                                ->options([
+                                    'Daniel',
+                                    'Fabricio',
+                                    'Karen',
+                                    'Esteban',
+                                    'Azfrith'
+                                    ])
+                                ->searchable('Ingrese CI del estudiante')
+                                ->required(),
                         ]),
                     Wizard\Step::make('Seleccionar pago')
                         ->schema([
-
+                            Forms\Components\Select::make('payment')
+                                ->options([
+                                    'Pagar un semestre',
+                                    'Pagar un hito'
+                                ])
+                                ->label('Pagar periodo de tiempo')
+                                ->required()
                         ]),
                     Wizard\Step::make('Seleccionar monto')
+                        ->schema([
+                            Forms\Components\Select::make('payment_method')
+                                ->options([
+                                    'Tarjeta',
+                                    'Efectivo',
+                                ])
+                                ->label('Metodo de pago')
+                                ->required(),
+                            Forms\Components\TextInput::make('ammount')
+                                ->integer()
+                                ->label('Monto pagado')
+                                ->numeric()
+                                ->required(),
+                        ])
                 ])
             ]);
     }
