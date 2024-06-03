@@ -32,7 +32,7 @@ class StudentResource extends Resource
                     ->options(Person::all()->pluck('ci', 'id'))
                     ->searchable(),
                 Forms\Components\Select::make('management_id')
-                ->label('Identificador')
+                ->label('Administracion')
                     ->required()
                     ->options(Management::all()->pluck('management', 'id'))
                     ->searchable(),
