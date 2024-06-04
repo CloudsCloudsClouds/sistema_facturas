@@ -92,7 +92,8 @@
                 <div class="factura-titulo">
                     <h1>Universidad Franz Tamayo</h1>
                     
-                    <p>Factura N: 0001</p>
+                    {{-- <p>Factura N: 0001</p> --}}
+                    <p>{{$timesheets}}</p>
                     <p>C. Héroes del Acre esq. Landaeta, No. 1855</p>
                     <p>La Paz-Bolivia</p>
                     <p>Tel: +591 (2) 2487700</p>

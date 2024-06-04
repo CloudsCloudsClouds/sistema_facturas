@@ -19,15 +19,24 @@ class ListPeople extends ListRecords
         return [
             Actions\CreateAction::make(),
             
-            Action::make('createPDF')
+            // Action::make('createPDF')
 
-                ->label('Reporte de personas')
-                ->color('warning')
-                //->requiresConfirmation()
-                ->url(
-                    fn (): string => route('pdf.factura', ['user' => Auth::user()]),
-                    shouldOpenInNewTab: true
-                )
+            //     ->label('Reporte de personas')
+            //     ->color('warning')
+            //     //->requiresConfirmation()
+            //     ->url(
+            //         fn (): string => route('pdf.factura', ['user' => Auth::user()]),
+            //         shouldOpenInNewTab: true
+            //     )
+
+            Action::make('createPDF')
+            ->label('Reporte de Personas')
+            ->color('warning')
+            //->requiresConfirmation()
+            ->url(
+                fn (): string => route('pdf.reportePersona'),
+                shouldOpenInNewTab: true
+            )
         ];
     }
 }
