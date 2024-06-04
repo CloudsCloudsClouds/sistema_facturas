@@ -19,6 +19,8 @@ class PaymentPlanDataResource extends Resource
     protected static ?string $model = PaymentPlanData::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-square-2-stack';
+    protected static ?string $navigationLabel = 'Datos de plan de pago';
+
 
     public static function form(Form $form): Form
     {

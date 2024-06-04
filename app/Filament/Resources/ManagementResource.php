@@ -20,6 +20,7 @@ class ManagementResource extends Resource
     protected static ?string $model = Management::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-paper-clip';
+    protected static ?string $navigationLabel = 'Administracion';
 
     public static function form(Form $form): Form
     {
@@ -33,7 +34,7 @@ class ManagementResource extends Resource
                 Forms\Components\Select::make('payment_plan_id')
                 ->label('Plan de Pago')
                     ->required()
-                    ->options(PaymentPlan::all()->pluck('tuition', 'id'))
+                    ->options(PaymentPlan::all()->pluck('plan_for', 'id'))
                     ->searchable(),
                 Forms\Components\TextInput::make('management')
                 ->label('Identificador')

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
             $table->unsignedFloat('paid_ammount');
-            $table->unsignedFloat('change');
+            $table->unsignedFloat('change')->nullable();
             $table->string('nit');
             $table->string('social_reason');
             $table->string('bill_code');
