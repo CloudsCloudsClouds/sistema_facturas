@@ -1,29 +1,27 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Management extends Model
 {
     use HasFactory;
 
-    public function Career(): HasOne
+    protected $fillable = ['career_id', 'payment_plan_id', 'management'];
+
+    public function career()
     {
-        return $this->hasOne(Career::class);
+        return $this->belongsTo(Career::class);
     }
 
-    public function Students(): BelongsToMany
+    public function paymentPlan()
     {
-        return $this->belongsToMany(Student::class);
+        return $this->belongsTo(PaymentPlan::class);
     }
 
-    public function PaymentPlan(): HasMany
+    public function students()
     {
-        return $this->hasMany(PaymentPlan::class);
+        return $this->hasMany(Student::class);
     }
 }
