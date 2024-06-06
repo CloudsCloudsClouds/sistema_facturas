@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('bill_data', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Bill::class)->cascadeOnDelete();
-            $table->foreignIdFor(Payment::class)->cascadeOnDelete();
+            $table->foreignIdFor(Bill::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Payment::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

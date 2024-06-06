@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('debts', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Semester::class)->cascadeOnDelete();
+            $table->foreignIdFor(Semester::class)->constrained()->cascadeOnDelete();
             $table->unsignedFloat('TotalCost');
             $table->enum('type', ['Course', 'Credit']);
             $table->timestamps();

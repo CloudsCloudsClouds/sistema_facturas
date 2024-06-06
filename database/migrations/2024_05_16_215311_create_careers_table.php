@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('careers', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Campus::class)->cascadeOnDelete();
+            $table->foreignIdFor(Campus::class)->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->unsignedTinyInteger('duration');
             $table->string('number')->nullable();

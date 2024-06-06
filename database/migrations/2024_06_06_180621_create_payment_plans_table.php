@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('payment_plans', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Career::class)->cascadeOnDelete();
-            $table->foreignIdFor(Term::class)->cascadeOnDelete();
+            $table->foreignIdFor(Career::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Term::class)->constrained()->cascadeOnDelete();
             $table->unsignedFloat('tuition');
             $table->timestamps();
         });

@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->enum('type', ['semestral', 'fee']);
             $table->unsignedInteger('ammount');
-            $table->foreignIdFor(Debt::class)->cascadeOnDelte();
-            $table->foreignIdFor(Student::class)->cascadeOnDelte();
+            $table->foreignIdFor(Debt::class)->constrained()->cascadeOnDelte();
+            $table->foreignIdFor(Student::class)->constrained()->cascadeOnDelte();
             $table->dateTime('date_of_payment');
             $table->timestamps();
         });

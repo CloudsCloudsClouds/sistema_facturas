@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('code');
             $table->string('email');
-            $table->foreignIdFor(Person::class)->cascadeOnDelete();
-            $table->foreignIdFor(PaymentPlan::class)->cascadeOnDelete();
+            $table->foreignIdFor(Person::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(PaymentPlan::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
