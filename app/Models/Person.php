@@ -4,15 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Person extends Model
 {
     use HasFactory;
 
-    public function Student(): BelongsToMany
+    public function students()
     {
-        return $this->belongsToMany(Student::class);
+        return $this->hasMany(Student::class);
     }
 }
