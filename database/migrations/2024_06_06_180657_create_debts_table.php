@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Semester;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,12 +12,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payment_plan_data', function (Blueprint $table) {
+        Schema::create('debts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('payment_plan_id')->constrained('payment_plans')->cascadeOnDelete();
-            $table->enum('type', ['course', 'credit']);
-            $table->string('administration');
-            $table->string('name')->nullable();
+            $table->foreignIdFor(Semester::class)->cascadeOnDelete();
+            $table->unsignedFloat('TotalCost');
+            $table->enum('type', ['Course', 'Credit']);
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payment_plan_data');
+        Schema::dropIfExists('debts');
     }
 };

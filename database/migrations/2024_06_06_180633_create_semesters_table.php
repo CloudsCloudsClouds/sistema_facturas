@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\PaymentPlan;
+use App\Models\Term;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,11 +13,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payment_plans', function (Blueprint $table) {
+        Schema::create('semesters', function (Blueprint $table) {
             $table->id();
-            $table->string('plan_for');
-            $table->unsignedInteger('tuition');
-            $table->unsignedTinyInteger('credit');
+            $table->foreignIdFor(Term::class)->cascadeOnDelete();
+            $table->foreignIdFor(PaymentPlan::class)->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payment_plans');
+        Schema::dropIfExists('semesters');
     }
 };

@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Career;
+use App\Models\Term;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,11 +13,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('management', function (Blueprint $table) {
+        Schema::create('payment_plans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('career_id')->constrained('careers')->cascadeOnDelete();
-            $table->foreignId('payment_plan_id')->constrained('payment_plans')->cascadeOnDelete();
-            $table->string('management');
+            $table->foreignIdFor(Career::class)->cascadeOnDelete();
+            $table->foreignIdFor(Term::class)->cascadeOnDelete();
+            $table->unsignedFloat('tuition');
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('management');
+        Schema::dropIfExists('payment_plans');
     }
 };
