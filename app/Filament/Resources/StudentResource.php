@@ -47,11 +47,12 @@ class StudentResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('person_id')
+                Tables\Columns\TextColumn::make('person.ci')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('payment_plan_id')
+                Tables\Columns\TextColumn::make('payment_plan.term.period')
                     ->numeric()
+                    ->label('Inscrito en gestion:')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

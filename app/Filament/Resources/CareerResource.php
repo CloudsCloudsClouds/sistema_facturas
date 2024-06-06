@@ -46,7 +46,7 @@ class CareerResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('campus_id')
+                Tables\Columns\TextColumn::make('campus.name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
