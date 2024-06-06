@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CareerResource\Pages;
-use App\Filament\Resources\CareerResource\RelationManagers;
-use App\Models\Career;
+use App\Filament\Resources\StudentResource\Pages;
+use App\Filament\Resources\StudentResource\RelationManagers;
+use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CareerResource extends Resource
+class StudentResource extends Resource
 {
-    protected static ?string $model = Career::class;
+    protected static ?string $model = Student::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,22 +23,19 @@ class CareerResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('campus_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('code')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('duration')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('number')
-                    ->maxLength(255)
-                    ->default(null),
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('person_id')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('payment_plan_id')
+                    ->required()
+                    ->numeric(),
             ]);
     }
 
@@ -46,18 +43,16 @@ class CareerResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('campus_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('duration')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('number')
+                Tables\Columns\TextColumn::make('code')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('person_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('payment_plan_id')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -90,9 +85,9 @@ class CareerResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCareers::route('/'),
-            'create' => Pages\CreateCareer::route('/create'),
-            'edit' => Pages\EditCareer::route('/{record}/edit'),
+            'index' => Pages\ListStudents::route('/'),
+            'create' => Pages\CreateStudent::route('/create'),
+            'edit' => Pages\EditStudent::route('/{record}/edit'),
         ];
     }
 }

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\CareerResource\Pages;
+namespace App\Filament\Resources\BillDataResource\Pages;
 
-use App\Filament\Resources\CareerResource;
+use App\Filament\Resources\BillDataResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListCareers extends ListRecords
+class ListBillData extends ListRecords
 {
-    protected static string $resource = CareerResource::class;
+    protected static string $resource = BillDataResource::class;
 
     protected function getHeaderActions(): array
     {

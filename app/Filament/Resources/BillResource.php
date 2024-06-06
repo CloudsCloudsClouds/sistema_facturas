@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CareerResource\Pages;
-use App\Filament\Resources\CareerResource\RelationManagers;
-use App\Models\Career;
+use App\Filament\Resources\BillResource\Pages;
+use App\Filament\Resources\BillResource\RelationManagers;
+use App\Models\Bill;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CareerResource extends Resource
+class BillResource extends Resource
 {
-    protected static ?string $model = Career::class;
+    protected static ?string $model = Bill::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,22 +23,22 @@ class CareerResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('campus_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('NIT')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('duration')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('number')
-                    ->maxLength(255)
-                    ->default(null),
-                Forms\Components\TextInput::make('email')
-                    ->email()
+                Forms\Components\TextInput::make('social_reazon')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('bill_code')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('total_paid')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('change')
+                    ->required()
+                    ->numeric()
+                    ->default(0.00),
             ]);
     }
 
@@ -46,18 +46,18 @@ class CareerResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('campus_id')
+                Tables\Columns\TextColumn::make('NIT')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('social_reazon')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('bill_code')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('total_paid')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('duration')
+                Tables\Columns\TextColumn::make('change')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('number')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -90,9 +90,9 @@ class CareerResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCareers::route('/'),
-            'create' => Pages\CreateCareer::route('/create'),
-            'edit' => Pages\EditCareer::route('/{record}/edit'),
+            'index' => Pages\ListBills::route('/'),
+            'create' => Pages\CreateBill::route('/create'),
+            'edit' => Pages\EditBill::route('/{record}/edit'),
         ];
     }
 }

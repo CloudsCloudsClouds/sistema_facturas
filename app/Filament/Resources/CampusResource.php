@@ -17,28 +17,22 @@ class CampusResource extends Resource
 {
     protected static ?string $model = Campus::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
-    protected static ?string $navigationLabel = 'Sedes';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                ->label('Nombre de Sede')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('direction')
-                ->label('Direcion')
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('number')
-                ->label('Numero')
-                    ->tel()
                     ->maxLength(255)
                     ->default(null),
                 Forms\Components\TextInput::make('email')
-                ->label('Email')
                     ->email()
                     ->required()
                     ->maxLength(255),
@@ -50,10 +44,8 @@ class CampusResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                ->label('Nombre de Sede')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('number')
-                ->label('Numero')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
@@ -71,10 +63,6 @@ class CampusResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ViewAction::make(),
-              
-                
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

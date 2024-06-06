@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CareerResource\Pages;
-use App\Filament\Resources\CareerResource\RelationManagers;
-use App\Models\Career;
+use App\Filament\Resources\PaymentResource\Pages;
+use App\Filament\Resources\PaymentResource\RelationManagers;
+use App\Models\Payment;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CareerResource extends Resource
+class PaymentResource extends Resource
 {
-    protected static ?string $model = Career::class;
+    protected static ?string $model = Payment::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,22 +23,19 @@ class CareerResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('campus_id')
+                Forms\Components\TextInput::make('type')
+                    ->required(),
+                Forms\Components\TextInput::make('ammount')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('duration')
+                Forms\Components\TextInput::make('debt_id')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('number')
-                    ->maxLength(255)
-                    ->default(null),
-                Forms\Components\TextInput::make('email')
-                    ->email()
+                Forms\Components\TextInput::make('student_id')
                     ->required()
-                    ->maxLength(255),
+                    ->numeric(),
+                Forms\Components\DateTimePicker::make('date_of_payment')
+                    ->required(),
             ]);
     }
 
@@ -46,18 +43,19 @@ class CareerResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('campus_id')
+                Tables\Columns\TextColumn::make('type'),
+                Tables\Columns\TextColumn::make('ammount')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('duration')
+                Tables\Columns\TextColumn::make('debt_id')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('number')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('student_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('date_of_payment')
+                    ->dateTime()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -90,9 +88,9 @@ class CareerResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCareers::route('/'),
-            'create' => Pages\CreateCareer::route('/create'),
-            'edit' => Pages\EditCareer::route('/{record}/edit'),
+            'index' => Pages\ListPayments::route('/'),
+            'create' => Pages\CreatePayment::route('/create'),
+            'edit' => Pages\EditPayment::route('/{record}/edit'),
         ];
     }
 }

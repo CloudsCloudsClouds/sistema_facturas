@@ -4,9 +4,7 @@ namespace App\Filament\Resources\CampusResource\Pages;
 
 use App\Filament\Resources\CampusResource;
 use Filament\Actions;
-use Filament\Actions\Action;
 use Filament\Resources\Pages\ListRecords;
-use Illuminate\Support\Facades\Auth;
 
 class ListCampuses extends ListRecords
 {
@@ -16,24 +14,6 @@ class ListCampuses extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
-            // Action::make('createPDF')
-
-            // ->label('Reporte de sucursales')
-            // ->color('warning')
-            // //->requiresConfirmation()
-            // ->url(
-            //     fn (): string => route('pdf.reporteSucursales', ['campus' => Auth::campus()]),
-            //     shouldOpenInNewTab: true
-            // )
-
-            Action::make('createPDF')
-            ->label('Reporte de sucursales')
-            ->color('warning')
-            //->requiresConfirmation()
-            ->url(
-                fn (): string => route('pdf.reporteSucursales'),
-                shouldOpenInNewTab: true
-            )
         ];
     }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CareerResource\Pages;
-use App\Filament\Resources\CareerResource\RelationManagers;
-use App\Models\Career;
+use App\Filament\Resources\DebtResource\Pages;
+use App\Filament\Resources\DebtResource\RelationManagers;
+use App\Models\Debt;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CareerResource extends Resource
+class DebtResource extends Resource
 {
-    protected static ?string $model = Career::class;
+    protected static ?string $model = Debt::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,22 +23,14 @@ class CareerResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('campus_id')
+                Forms\Components\TextInput::make('semester_id')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('duration')
+                Forms\Components\TextInput::make('TotalCost')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('number')
-                    ->maxLength(255)
-                    ->default(null),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\TextInput::make('type')
+                    ->required(),
             ]);
     }
 
@@ -46,18 +38,13 @@ class CareerResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('campus_id')
+                Tables\Columns\TextColumn::make('semester_id')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('duration')
+                Tables\Columns\TextColumn::make('TotalCost')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('number')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('type'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -90,9 +77,9 @@ class CareerResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCareers::route('/'),
-            'create' => Pages\CreateCareer::route('/create'),
-            'edit' => Pages\EditCareer::route('/{record}/edit'),
+            'index' => Pages\ListDebts::route('/'),
+            'create' => Pages\CreateDebt::route('/create'),
+            'edit' => Pages\EditDebt::route('/{record}/edit'),
         ];
     }
 }

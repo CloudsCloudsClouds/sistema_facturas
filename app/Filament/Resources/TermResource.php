@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CareerResource\Pages;
-use App\Filament\Resources\CareerResource\RelationManagers;
-use App\Models\Career;
+use App\Filament\Resources\TermResource\Pages;
+use App\Filament\Resources\TermResource\RelationManagers;
+use App\Models\Term;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CareerResource extends Resource
+class TermResource extends Resource
 {
-    protected static ?string $model = Career::class;
+    protected static ?string $model = Term::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,22 +23,13 @@ class CareerResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('campus_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('period')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('duration')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('number')
-                    ->maxLength(255)
-                    ->default(null),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\DatePicker::make('beginning')
+                    ->required(),
+                Forms\Components\DatePicker::make('end')
+                    ->required(),
             ]);
     }
 
@@ -46,18 +37,14 @@ class CareerResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('campus_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('period')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('beginning')
+                    ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('duration')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('end')
+                    ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('number')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -90,9 +77,9 @@ class CareerResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCareers::route('/'),
-            'create' => Pages\CreateCareer::route('/create'),
-            'edit' => Pages\EditCareer::route('/{record}/edit'),
+            'index' => Pages\ListTerms::route('/'),
+            'create' => Pages\CreateTerm::route('/create'),
+            'edit' => Pages\EditTerm::route('/{record}/edit'),
         ];
     }
 }
