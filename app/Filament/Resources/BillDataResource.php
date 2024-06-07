@@ -4,7 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\BillDataResource\Pages;
 use App\Filament\Resources\BillDataResource\RelationManagers;
+use App\Models\Bill;
 use App\Models\BillData;
+use App\Models\Payment;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -23,12 +25,14 @@ class BillDataResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('bill_id')
+                Forms\Components\Select::make('bill_id')
                     ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('payment_id')
+                    ->options(Bill::all()->pluck('code', 'id'))
+                    ->searchable(),
+                Forms\Components\Select::make('payment_id')
                     ->required()
-                    ->numeric(),
+                    ->options(Payment::all()->pluck('id', 'id'))
+                    ->searchable(),
             ]);
     }
 
@@ -36,10 +40,7 @@ class BillDataResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('bill_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('payment_id')
+                Tables\Columns\TextColumn::make('bill.NIT')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

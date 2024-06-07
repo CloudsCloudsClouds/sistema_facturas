@@ -3,9 +3,16 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BillResource\Pages;
-use App\Filament\Resources\BillResource\RelationManagers;
 use App\Models\Bill;
+use App\Models\BillData;
+use App\Models\Debt;
+use App\Models\Payment;
 use Filament\Forms;
+use Filament\Forms\Components\Wizard;
+use Filament\Forms\Components\Wizard\Step;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -23,22 +30,61 @@ class BillResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('NIT')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('social_reazon')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('bill_code')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('total_paid')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('change')
-                    ->required()
-                    ->numeric()
-                    ->default(0.00),
+                Wizard::make([
+                    Step::make('Estudiante')
+                        ->schema([
+                            Select::make('student_id')
+                                ->label('Student')
+                                ->relationship('student', 'code')
+                                ->searchable()
+                                ->required(),
+                        ]),
+                    Step::make('Pension')
+                        ->schema([
+                            Select::make('semester_id')
+                                ->label('Semester')
+                                ->relationship('semester', 'id')
+                                ->searchable()
+                                ->required(),
+                            Repeater::make('debts')
+                                ->label('Debts')
+                                ->schema([
+                                    Select::make('debt_id')
+                                        ->label('Debt')
+                                        ->options(Debt::all()->pluck('TotalCost', 'id'))
+                                        ->searchable()
+                                        ->required(),
+                                ])
+                        ]),
+                    Step::make('Pago')
+                        ->schema([
+                            Repeater::make('payments')
+                                ->label('Payments')
+                                ->schema([
+                                    TextInput::make('amount')
+                                        ->label('Amount')
+                                        ->numeric()
+                                        ->required(),
+                                ]),
+                            TextInput::make('NIT')
+                                ->label('NIT')
+                                ->required(),
+                            TextInput::make('social_reazon')
+                                ->label('Social Reazon')
+                                ->required(),
+                            TextInput::make('bill_code')
+                                ->label('Bill Code')
+                                ->required(),
+                            TextInput::make('total_paid')
+                                ->label('Total Paid')
+                                ->numeric()
+                                ->required(),
+                            TextInput::make('change')
+                                ->label('Change')
+                                ->numeric()
+                                ->default(0)
+                        ])
+                ])
             ]);
     }
 
