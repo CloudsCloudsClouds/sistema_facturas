@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(Career::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Term::class)->constrained()->cascadeOnDelete();
             $table->unsignedFloat('tuition');
+            $table->string('identifier');
             $table->timestamps();
         });
     }
