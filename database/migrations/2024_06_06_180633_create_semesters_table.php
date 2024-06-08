@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Term::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(PaymentPlan::class)->constrained()->cascadeOnDelete();
+            $table->string('identifier');
             $table->timestamps();
         });
     }
