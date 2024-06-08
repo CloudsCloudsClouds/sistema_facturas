@@ -25,7 +25,7 @@ class TermResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('period')
                     ->required()
-                    ->maxLength(255),
+                    ->regex('/^[12]\/[0-9]{2}$/'),
                 Forms\Components\DatePicker::make('beginning')
                     ->required(),
                 Forms\Components\DatePicker::make('end')
