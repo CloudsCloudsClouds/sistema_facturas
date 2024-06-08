@@ -4,7 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PaymentPlanResource\Pages;
 use App\Filament\Resources\PaymentPlanResource\RelationManagers;
+use App\Models\Career;
 use App\Models\PaymentPlan;
+use App\Models\Term;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -23,15 +25,20 @@ class PaymentPlanResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('career_id')
+                Forms\Components\Select::make('career_id')
                     ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('term_id')
+                    ->options(Career::all()->pluck('name', 'id'))
+                    ->searchable(),
+                Forms\Components\Select::make('term_id')
                     ->required()
-                    ->numeric(),
+                    ->options(Term::all()->pluck('period', 'id'))
+                    ->searchable(),
                 Forms\Components\TextInput::make('tuition')
                     ->required()
                     ->numeric(),
+                Forms\Components\TextInput::make('identifier')
+                    ->label('Identifier')
+                    ->hidden(),
             ]);
     }
 
@@ -39,10 +46,10 @@ class PaymentPlanResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('career_id')
+                Tables\Columns\TextColumn::make('career.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('term_id')
+                Tables\Columns\TextColumn::make('term.period')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tuition')

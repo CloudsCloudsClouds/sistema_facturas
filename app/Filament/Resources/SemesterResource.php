@@ -4,7 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\SemesterResource\Pages;
 use App\Filament\Resources\SemesterResource\RelationManagers;
+use App\Models\PaymentPlan;
 use App\Models\Semester;
+use App\Models\Term;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -23,12 +25,17 @@ class SemesterResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('term_id')
+                Forms\Components\Select::make('term_id')
                     ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('payment_plan_id')
+                    ->options(Term::all()->pluck('period', 'id'))
+                    ->searchable(),
+                Forms\Components\Select::make('payment_plan_id')
                     ->required()
-                    ->numeric(),
+                    ->options(PaymentPlan::all()->pluck('identifier', 'id'))
+                    ->searchable(),
+                Forms\Components\TextInput::make('identifier')
+                    ->label('Identifier')
+                    ->hidden(),
             ]);
     }
 

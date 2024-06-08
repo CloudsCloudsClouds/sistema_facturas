@@ -4,9 +4,12 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\BillResource\Pages;
 use App\Models\Bill;
-use App\Models\BillData;
+use App\Models\Student;
+use App\Models\Semester;
 use App\Models\Debt;
 use App\Models\Payment;
+use App\Models\BillData;
+use App\Models\Term;
 use Filament\Forms;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Wizard\Step;
@@ -19,6 +22,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\DB;
 
 class BillResource extends Resource
 {
@@ -35,7 +39,7 @@ class BillResource extends Resource
                         ->schema([
                             Select::make('student_id')
                                 ->label('Student')
-                                ->relationship('student', 'code')
+                                ->options(Student::all()->pluck('code', 'id'))
                                 ->searchable()
                                 ->required(),
                         ]),
@@ -43,18 +47,33 @@ class BillResource extends Resource
                         ->schema([
                             Select::make('semester_id')
                                 ->label('Semester')
-                                ->relationship('semester', 'id')
+                                ->relationship('semester', 'term')
                                 ->searchable()
-                                ->required(),
+                                ->options(Semester::all()->pluck('term_id', 'id'))
+                                ->required()
+                                ->reactive()
+                                ->afterStateUpdated(fn ($state, callable $set) => $set('debts', Debt::where('semester_id', $state)->get()->toArray())),
                             Repeater::make('debts')
                                 ->label('Debts')
                                 ->schema([
-                                    Select::make('debt_id')
-                                        ->label('Debt')
-                                        ->options(Debt::all()->pluck('TotalCost', 'id'))
-                                        ->searchable()
-                                        ->required(),
+                                    TextInput::make('TotalCost')
+                                        ->label('Total Cost')
+                                        ->numeric()
+                                        ->disabled(),
+                                    TextInput::make('type')
+                                        ->label('Type')
+                                        ->disabled(),
+                                    TextInput::make('remaining_payments')
+                                        ->label('Remaining Payments')
+                                        ->numeric(),
+                                    TextInput::make('amount_due')
+                                        ->label('Amount Due')
+                                        ->numeric()
                                 ])
+                                ->statePath('debts')
+                                ->disableItemMovement()
+                                ->disableItemCreation()
+                                ->disableItemDeletion()
                         ]),
                     Step::make('Pago')
                         ->schema([
@@ -64,7 +83,10 @@ class BillResource extends Resource
                                     TextInput::make('amount')
                                         ->label('Amount')
                                         ->numeric()
-                                        ->required(),
+                                        ->required()
+                                        ->default(fn ($get) => $get('payment_type') === 'full'
+                                            ? ($get('amount_due') ?: 0)
+                                            : ($get('remaining_payments') > 0 ? $get('amount_due') / $get('remaining_payments') : 0)),
                                 ]),
                             TextInput::make('NIT')
                                 ->label('NIT')
