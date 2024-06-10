@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Filament\Resources\BillResource\Pages;
 
 use App\Filament\Resources\BillResource;
@@ -22,17 +23,17 @@ class CreateBill extends CreateRecord
                 'social_reazon' => $data['social_reazon'],
                 'bill_code' => $data['bill_code'],
                 'total_paid' => $data['total_paid'],
-                'change' => $data['change'],
+                'change' => $data['total_paid'] - $data['amount'],
             ]);
 
             // Create Payments
-            foreach ($data['payments'] as $paymentData) {
+            foreach ($data['debt_ids'] as $debt_ids) {
                 $payment = Payment::create([
-                    'type' => $data['payment_type'], // 'installment' or 'full'
-                    'amount' => $paymentData['amount'],
-                    'debt_id' => $paymentData['debt_id'],
+                    'type' => $data['payment_type'],
+                    'ammount' => Debt::find($debt_ids)->TotalCost,
+                    'debt_id' => $debt_ids,
                     'student_id' => $data['student_id'],
-                    'date_of_payment' => $paymentData['date_of_payment'],
+                    'date_of_payment' => now(),
                 ]);
 
                 // Create Bill Data
@@ -40,15 +41,7 @@ class CreateBill extends CreateRecord
                     'bill_id' => $bill->id,
                     'payment_id' => $payment->id,
                 ]);
-
-                // Update remaining payments
-                $debt = Debt::find($paymentData['debt_id']);
-                if ($debt) {
-                    $debt->remaining_payments--;
-                    $debt->save();
-                }
             }
-
             return $bill;
         });
     }

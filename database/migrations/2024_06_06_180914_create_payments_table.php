@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['semestral', 'fee']);
+            $table->enum('type', ['semestral', 'fee'])->nullable();
             $table->unsignedInteger('ammount');
             $table->foreignIdFor(Debt::class)->constrained()->cascadeOnDelte();
             $table->foreignIdFor(Student::class)->constrained()->cascadeOnDelte();

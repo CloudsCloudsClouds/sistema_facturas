@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource\RelationManagers;
+use App\Models\PaymentPlan;
 use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -30,12 +31,14 @@ class StudentResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('person_id')
+                Forms\Components\Select::make('person_id')
                     ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('payment_plan_id')
+                    ->relationship(name: 'person', titleAttribute: 'ci')
+                    ->searchable(['email'], ['ci']),
+                Forms\Components\Select::make('payment_plan_id')
                     ->required()
-                    ->numeric(),
+                    ->options(PaymentPlan::all()->pluck('identifier', 'id'))
+                    ->searchable(),
             ]);
     }
 

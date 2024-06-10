@@ -11,6 +11,7 @@ use App\Models\Payment;
 use App\Models\BillData;
 use App\Models\Term;
 use Filament\Forms;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Wizard\Step;
 use Filament\Forms\Components\Select;
@@ -20,9 +21,13 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use App\Models\PaymentPlan;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\DB;
+use Ramsey\Uuid\Type\Integer;
+
+use function PHPUnit\Framework\assertIsArray;
 
 class BillResource extends Resource
 {
@@ -40,53 +45,64 @@ class BillResource extends Resource
                             Select::make('student_id')
                                 ->label('Student')
                                 ->options(Student::all()->pluck('code', 'id'))
-                                ->searchable()
-                                ->required(),
+                                ->searchable(['code', 'email'])
+                                ->required()
+                                ->afterStateUpdated(fn (callable $set) => $set('semester_id', null)),
+
                         ]),
                     Step::make('Pension')
                         ->schema([
                             Select::make('semester_id')
                                 ->label('Semester')
-                                ->relationship('semester', 'term')
                                 ->searchable()
-                                ->options(Semester::all()->pluck('term_id', 'id'))
+                                ->options(function (callable $get) {
+                                    $student_id = $get('student_id');
+                                    if ($student_id) {
+                                        $paymentPlanId = Student::find($student_id)->PaymentPlan->id;
+                                        return Semester::where('payment_plan_id', $paymentPlanId)->pluck('identifier', 'id');
+                                    }
+                                    return [];
+                                })
                                 ->required()
                                 ->reactive()
-                                ->afterStateUpdated(fn ($state, callable $set) => $set('debts', Debt::where('semester_id', $state)->get()->toArray())),
-                            Repeater::make('debts')
+                                ->afterStateUpdated(fn (callable $set) => $set('debt_ids', [])),
+                            CheckboxList::make('debt_ids')
                                 ->label('Debts')
-                                ->schema([
-                                    TextInput::make('TotalCost')
-                                        ->label('Total Cost')
-                                        ->numeric()
-                                        ->disabled(),
-                                    TextInput::make('type')
-                                        ->label('Type')
-                                        ->disabled(),
-                                    TextInput::make('remaining_payments')
-                                        ->label('Remaining Payments')
-                                        ->numeric(),
-                                    TextInput::make('amount_due')
-                                        ->label('Amount Due')
-                                        ->numeric()
-                                ])
-                                ->statePath('debts')
-                                ->disableItemMovement()
-                                ->disableItemCreation()
-                                ->disableItemDeletion()
+                                ->options(function (callable $get) {
+                                    $semesterId = $get('semester_id');
+                                    if ($semesterId) {
+                                        $unpaidDebts = Debt::where('semester_id', $semesterId)
+                                            ->whereDoesntHave('payments')
+                                            ->pluck('TotalCost', 'id');
+                                        return $unpaidDebts;
+                                    }
+                                    return [];
+                                })
+                                ->reactive()
+                                ->required()
+                                ->afterStateUpdated(fn (callable $set) => $set('amount', function (callable $get) {
+                                    $paymentsId = $get('debt_ids');
+                                    $sumAmount = 0;
+                                    assertIsArray($paymentsId);
+                                    foreach ($paymentsId as $debtId) {
+                                        $sumAmount += Debt::find($debtId)->TotalCost;
+                                    }
+
+                                    return $sumAmount;
+                                }))
                         ]),
                     Step::make('Pago')
                         ->schema([
-                            Repeater::make('payments')
-                                ->label('Payments')
-                                ->schema([
-                                    TextInput::make('amount')
-                                        ->label('Amount')
-                                        ->numeric()
-                                        ->required()
-                                        ->default(fn ($get) => $get('payment_type') === 'full'
-                                            ? ($get('amount_due') ?: 0)
-                                            : ($get('remaining_payments') > 0 ? $get('amount_due') / $get('remaining_payments') : 0)),
+                            TextInput::make('amount')
+                                ->required()
+                                ->readOnly()
+                                ->reactive()
+                                ->numeric(),
+                            Select::make('payment_type')
+                                ->required()
+                                ->options([
+                                    'semestral',
+                                    'fee'
                                 ]),
                             TextInput::make('NIT')
                                 ->label('NIT')
@@ -100,10 +116,12 @@ class BillResource extends Resource
                             TextInput::make('total_paid')
                                 ->label('Total Paid')
                                 ->numeric()
-                                ->required(),
+                                ->required()
+                                ->gte('amount'),
                             TextInput::make('change')
                                 ->label('Change')
                                 ->numeric()
+                                ->hidden()
                                 ->default(0)
                         ])
                 ])
