@@ -70,12 +70,20 @@ class BillResource extends Resource
                                 ->label('Debts')
                                 ->options(function (callable $get) {
                                     $semesterId = $get('semester_id');
+
                                     if ($semesterId) {
-                                        $unpaidDebts = Debt::where('semester_id', $semesterId)
-                                            ->whereDoesntHave('payments')
+                                        return Debt::where('semester_id', $semesterId)
+                                            ->with('payments') // Eager load payments for efficient filtering
+                                            ->whereDoesntHave('payments', function ($query) use ($get) {
+                                                $studentId = $get('student_id'); // Access student_id from context
+
+                                                if ($studentId) {
+                                                    $query->where('student_id', $studentId); // Filter unpaid by this student
+                                                }
+                                            })
                                             ->pluck('TotalCost', 'id');
-                                        return $unpaidDebts;
                                     }
+
                                     return [];
                                 })
                                 ->reactive()
@@ -112,7 +120,8 @@ class BillResource extends Resource
                                 ->required(),
                             TextInput::make('bill_code')
                                 ->label('Bill Code')
-                                ->required(),
+                                ->required()
+                                ->hidden(),
                             TextInput::make('total_paid')
                                 ->label('Total Paid')
                                 ->numeric()

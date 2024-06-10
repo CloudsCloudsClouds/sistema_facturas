@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\DebtResource\Pages;
 use App\Filament\Resources\DebtResource\RelationManagers;
 use App\Models\Debt;
+use App\Models\Semester;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -23,9 +24,9 @@ class DebtResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('semester_id')
+                Forms\Components\Select::make('semester_id')
                     ->required()
-                    ->numeric(),
+                    ->options(Semester::all()->pluck('identifier', 'id')),
                 Forms\Components\TextInput::make('TotalCost')
                     ->required()
                     ->numeric(),
@@ -38,7 +39,7 @@ class DebtResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('semester_id')
+                Tables\Columns\TextColumn::make('semester.identifier')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('TotalCost')

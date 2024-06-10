@@ -21,7 +21,7 @@ class CreateBill extends CreateRecord
             $bill = Bill::create([
                 'NIT' => $data['NIT'],
                 'social_reazon' => $data['social_reazon'],
-                'bill_code' => $data['bill_code'],
+                'bill_code' => fake()->randomNumber(9, true),
                 'total_paid' => $data['total_paid'],
                 'change' => $data['total_paid'] - $data['amount'],
             ]);
