@@ -45,7 +45,7 @@ class SemesterResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('term.period')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('payment_plan.identifier')
+                Tables\Columns\TextColumn::make('identifier')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')

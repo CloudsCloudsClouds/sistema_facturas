@@ -8,11 +8,14 @@ use App\Models\Debt;
 use App\Models\Semester;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+
+use function PHPUnit\Framework\isTrue;
 
 class DebtResource extends Resource
 {
@@ -29,11 +32,30 @@ class DebtResource extends Resource
                     ->required()
                     ->options(Semester::all()->pluck('identifier', 'id'))
                     ->searchable(),
-                Forms\Components\TextInput::make('TotalCost')
+                Forms\Components\TextInput::make('total_cost')
                     ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('type')
-                    ->required(),
+                    ->numeric()
+                    ->helperText('Este es el costo TOTAL del semestre, no el costo individual de cada cuota ¡Cuidado!')
+                    ->prefix('Bs.'),
+                Forms\Components\Select::make('type')
+                    ->required()
+                    ->options([
+                        'Carrera' => 'Carrera',
+                        'Curso' => 'Curso'
+                    ])
+                    ->default('Carrera')
+                    ->selectablePlaceholder(false)
+                    ->afterStateUpdated(
+                        fn ($state, callable $set) =>
+                        $set('enable_identifier', $state === 'Curso')
+                    )
+                    ->live(onBlur: true)
+                    ->reactive(),
+                Forms\Components\TextInput::make('description')
+                    ->reactive()
+                    ->live()
+                    ->disabled(fn (callable $get) => $get('enable_identifier') !== true)
+                    ->readOnly(fn (callable $get) => $get('enable_identifier') !== true),
             ]);
     }
 
@@ -44,7 +66,7 @@ class DebtResource extends Resource
                 Tables\Columns\TextColumn::make('semester.identifier')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('TotalCost')
+                Tables\Columns\TextColumn::make('total_cost')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('type'),

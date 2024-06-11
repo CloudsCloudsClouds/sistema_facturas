@@ -6,6 +6,7 @@ use App\Models\Campus;
 use App\Models\Career;
 use App\Models\Person;
 use App\Models\Student;
+use App\Models\Term;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -19,15 +20,15 @@ class DatabaseSeeder extends Seeder
         // Crear usuarios
         User::factory(1)->create();
 
-         // Llamar a los seeders específicos
-         $this->call([
+        // Llamar a los seeders específicos
+        $this->call([
             CampusSeeder::class,
             CareerSeeder::class,
         ]);
 
         $this->call([
             CareerSeeder::class,
-            // otros seeders si los tienes
+            TermSeeder::class,
         ]);
 
         // Crear personas (puede depender de User, Campus o Career)
@@ -37,4 +38,3 @@ class DatabaseSeeder extends Seeder
         // Student::factory(50)->create();
     }
 }
-

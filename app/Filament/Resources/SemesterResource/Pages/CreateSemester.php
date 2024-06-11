@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\SemesterResource\Pages;
 
 use App\Filament\Resources\SemesterResource;
+use App\Models\Career;
 use App\Models\PaymentPlan;
 use App\Models\Semester;
 use App\Models\Term;
@@ -16,9 +17,11 @@ class CreateSemester extends CreateRecord
 
     protected function handleRecordCreation(array $data): Semester
     {
-        $identifier = Term::find($data['payment_plan_id']);
+        $identifier_period = Term::find($data['term_id'])->period;
 
-        $data['identifier'] = $identifier->identifier;
+        $identifier_career = Career::find(PaymentPlan::find($data['payment_plan_id'])->career_id)->name;
+
+        $data['identifier'] = $identifier_career . ' ' . $identifier_period;
 
         return Semester::create($data);
     }

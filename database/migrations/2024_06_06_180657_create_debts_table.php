@@ -15,9 +15,10 @@ return new class extends Migration
         Schema::create('debts', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Semester::class)->constrained()->cascadeOnDelete();
-            $table->unsignedFloat('TotalCost');
-            $table->enum('type', ['Course', 'Credit']);
+            $table->unsignedFloat('total_cost');
+            $table->enum('type', ['Curso', 'Carrera']);
             $table->string('description');
+            $table->tinyInteger('share');
             $table->timestamps();
         });
     }
