@@ -26,11 +26,14 @@ class TermResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('period')
+                ->label('Gestion')
                     ->required()
                     ->regex('/^[12]\/[0-9]{2}$/'),
                 Forms\Components\DatePicker::make('beginning')
+                ->label('Comienzo')
                     ->required(),
                 Forms\Components\DatePicker::make('end')
+                ->label('Fin')
                     ->required(),
             ]);
     }

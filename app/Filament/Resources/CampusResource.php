@@ -25,6 +25,7 @@ protected static ?string $navigationLabel = 'Sedes';
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                
                     ->required()
                     ->maxLength(255)
                     ->label('Nombre'),

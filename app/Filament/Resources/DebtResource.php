@@ -28,10 +28,12 @@ class DebtResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('semester_id')
+                ->label('Semestre_id')
                     ->required()
                     ->options(Semester::all()->pluck('identifier', 'id'))
                     ->searchable(),
                 Forms\Components\TextInput::make('total_cost')
+                ->label('Costo toral')
                     ->required()
                     ->numeric()
                     ->helperText('Este es el costo TOTAL del semestre, no el costo individual de cada cuota ¡Cuidado!')
@@ -51,6 +53,7 @@ class DebtResource extends Resource
                     ->live(onBlur: true)
                     ->reactive(),
                 Forms\Components\TextInput::make('description')
+                ->label('Descripcion')
                     ->reactive()
                     ->live()
                     ->disabled(fn (callable $get) => $get('enable_identifier') !== true)
@@ -70,7 +73,8 @@ class DebtResource extends Resource
                     ->numeric()
                     ->sortable()
                     ->label('costo'),
-                Tables\Columns\TextColumn::make('type'),
+                Tables\Columns\TextColumn::make('type')
+                ->label('Tipo'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
