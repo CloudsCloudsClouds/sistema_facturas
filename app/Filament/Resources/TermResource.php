@@ -17,8 +17,10 @@ class TermResource extends Resource
 {
     protected static ?string $model = Term::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+        protected static ?string $navigationLabel = 'Gestion';
+    protected static ?string $label = 'Gestion';
+    protected static ?string $pluralLabel = 'Gestiones';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
     public static function form(Form $form): Form
     {
         return $form
@@ -38,13 +40,16 @@ class TermResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('period')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('periodo'),
                 Tables\Columns\TextColumn::make('beginning')
                     ->date()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('inicio'),
                 Tables\Columns\TextColumn::make('end')
                     ->date()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('fin'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

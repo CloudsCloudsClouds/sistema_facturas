@@ -18,6 +18,9 @@ class CreateBill extends CreateRecord
     {
         return DB::transaction(function () use ($data) {
             // Create the Bill
+            if (!key_exists('type', $data)) {
+                $data['type'] = 'fee';
+            }
             $bill = Bill::create([
                 'NIT' => $data['NIT'],
                 'social_reazon' => $data['social_reazon'],
@@ -29,8 +32,8 @@ class CreateBill extends CreateRecord
             // Create Payments
             foreach ($data['debt_ids'] as $debt_ids) {
                 $payment = Payment::create([
-                    'type' => $data['payment_type'],
-                    'ammount' => Debt::find($debt_ids)->TotalCost,
+                    'type' => $data['type'],
+                    'ammount' => Debt::find($debt_ids)->total_cost,
                     'debt_id' => $debt_ids,
                     'student_id' => $data['student_id'],
                     'date_of_payment' => now(),

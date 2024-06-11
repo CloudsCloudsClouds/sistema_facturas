@@ -26,11 +26,11 @@ Route::get('/', function () {
 
 Route::get('/pdf/generate/timesheet/{user}', [PdfController::class,'TimesheetRecords'])->name('pdf.factura');
 
+
 Route::get('/pdf/reporte-estudiantes', [PdfController::class, 'reporteEstudiantes'])->name('pdf.reporteEstudiantes');
 Route::get('/pdf/reporte-personas', [PdfController::class, 'reportePersona'])->name('pdf.reportePersona');
 Route::get('/pdf/reporte-sucursales', [PdfController::class, 'reporteSucursales'])->name('pdf.reporteSucursales');
 Route::get('/pdf/reporte-carreras', [PdfController::class, 'reporteCarreras'])->name('pdf.reporteCarreras');
-
 
 
 

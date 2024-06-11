@@ -16,15 +16,7 @@ class ListCampuses extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
-            // Action::make('createPDF')
 
-            // ->label('Reporte de sucursales')
-            // ->color('warning')
-            // //->requiresConfirmation()
-            // ->url(
-            //     fn (): string => route('pdf.reporteSucursales', ['campus' => Auth::campus()]),
-            //     shouldOpenInNewTab: true
-            // )
 
             Action::make('createPDF')
             ->label('Reporte de sucursales')

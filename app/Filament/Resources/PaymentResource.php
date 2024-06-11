@@ -17,8 +17,10 @@ class PaymentResource extends Resource
 {
     protected static ?string $model = Payment::class;
 
+    protected static ?string $navigationLabel = 'Pagos';
+    protected static ?string $label = 'Pagos'; // Cambia el label
+    protected static ?string $pluralLabel = 'Pagos'; // Cambia el plural label
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
     public static function form(Form $form): Form
     {
         return $form

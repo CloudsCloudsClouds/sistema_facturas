@@ -18,8 +18,9 @@ class CareerResource extends Resource
 {
     protected static ?string $model = Career::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    protected static ?string $label = 'Carreras'; // Cambia el label
+    protected static ?string $pluralLabel = 'Carreras'; // Cambia el plural label
+        protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     public static function form(Form $form): Form
     {
         return $form
@@ -29,22 +30,27 @@ class CareerResource extends Resource
                     ->options(
                         Campus::all()->pluck('name', 'id')
                     )
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Sede'),
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->label('Nombre'),
                 Forms\Components\TextInput::make('duration')
                     ->required()
                     ->numeric()
-                    ->maxValue(12),
+                    ->maxValue(12)
+                    ->label('Duracion'),
                 Forms\Components\TextInput::make('number')
                     ->maxLength(255)
                     ->numeric()
-                    ->tel(),
+                    ->tel()
+                    ->label('Numero'),
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->label('email'),
             ]);
     }
 
@@ -54,16 +60,21 @@ class CareerResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('campus.name')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('sede'),
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('nombre'),
                 Tables\Columns\TextColumn::make('duration')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('duracion'),
                 Tables\Columns\TextColumn::make('number')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('numero'),
                 Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('email'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

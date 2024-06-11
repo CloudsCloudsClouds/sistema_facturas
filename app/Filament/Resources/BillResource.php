@@ -9,6 +9,7 @@ use App\Models\Semester;
 use App\Models\Debt;
 use App\Models\Payment;
 use App\Models\BillData;
+use App\Models\Career;
 use App\Models\Term;
 use Filament\Forms;
 use Filament\Forms\Components\CheckboxList;
@@ -22,9 +23,11 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use App\Models\PaymentPlan;
+use App\Models\Person;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Ramsey\Uuid\Type\Integer;
 
 use function PHPUnit\Framework\assertIsArray;
@@ -33,6 +36,9 @@ class BillResource extends Resource
 {
     protected static ?string $model = Bill::class;
 
+    protected static ?string $navigationLabel = 'Facturas';
+    protected static ?string $label = 'Factura'; // Cambia el label
+    protected static ?string $pluralLabel = 'Factura'; // Cambia el plural label
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -43,17 +49,41 @@ class BillResource extends Resource
                     Step::make('Estudiante')
                         ->schema([
                             Select::make('student_id')
-                                ->label('Student')
+                                ->label('Codigo del estudiante')
                                 ->options(Student::all()->pluck('code', 'id'))
                                 ->searchable(['code', 'email'])
                                 ->required()
-                                ->afterStateUpdated(fn (callable $set) => $set('semester_id', null)),
+                                ->reactive()
+                                ->live(onBlur: true)
+                                ->afterStateUpdated(fn (callable $set) => $set('semester_id', null))
+                                ->afterStateUpdated(function (callable $set, callable $get) {
+                                    $student_id = $get('student_id');
+                                    $info = BillResource::getStudentInfo($student_id);
 
+                                    $set('student_name', $info['names']);
+                                    $set('student_career', $info['career']);
+                                    $set('student_email', $info['email']);
+                                }),
+                            TextInput::make('student_name')
+                                ->label('Nombre del Estudiante')
+                                ->readOnly()
+                                ->reactive()
+                                ->hidden(fn (callable $get) => !filled($get('student_id'))),
+                            TextInput::make('student_career')
+                                ->label('Estudiante de')
+                                ->readOnly()
+                                ->reactive()
+                                ->hidden(fn (callable $get) => !filled($get('student_id'))),
+                            TextInput::make('student_email')
+                                ->label('Email del estudiante')
+                                ->reactive()
+                                ->readOnly()
+                                ->hidden(fn (callable $get) => !filled($get('student_id'))),
                         ]),
                     Step::make('Pension')
                         ->schema([
                             Select::make('semester_id')
-                                ->label('Semester')
+                                ->label('Semestre')
                                 ->searchable()
                                 ->options(function (callable $get) {
                                     $student_id = $get('student_id');
@@ -65,9 +95,27 @@ class BillResource extends Resource
                                 })
                                 ->required()
                                 ->reactive()
-                                ->afterStateUpdated(fn (callable $set) => $set('debt_ids', [])),
+                                ->afterStateUpdated(function (callable $set) {
+                                    $set('debt_ids', []);
+                                    $set('type', 'fee');
+                                }),
+                            Select::make('type')
+                                ->options([
+                                    'semestral' => 'Semestral',
+                                    'fee' => 'Cuota',
+                                ])
+                                ->default('fee')
+                                ->required()
+                                ->reactive()
+                                ->hidden(function (callable $get) {
+                                    $semester_id = $get('semester_id');
+                                    $student_id = $get('student_id');
+
+                                    return BillResource::getPaymentHasBeenMade($student_id, $semester_id);
+                                }),
+
                             CheckboxList::make('debt_ids')
-                                ->label('Debts')
+                                ->label('Deudas')
                                 ->options(function (callable $get) {
                                     $semesterId = $get('semester_id');
 
@@ -81,20 +129,55 @@ class BillResource extends Resource
                                                     $query->where('student_id', $studentId); // Filter unpaid by this student
                                                 }
                                             })
-                                            ->pluck('TotalCost', 'id');
+                                            ->pluck('info', 'id');
                                     }
 
                                     return [];
                                 })
                                 ->reactive()
                                 ->required()
+                                ->hidden(function (callable $get) {
+                                    $is_full_payment = $get('type') !== 'fee';
+
+
+                                    if ($is_full_payment) {
+                                        $semester_id = $get('semester_id');
+                                        $paymentsId = Debt::where('semester_id', $semester_id)
+                                            ->with('payments')
+                                            ->whereDoesntHave('payments', function ($query) use ($get) {
+                                                $student_id = $get('student_id');
+
+                                                if ($student_id) {
+                                                    $query->where('student_id', $student_id);
+                                                }
+                                            })->pluck('id', 'id');
+                                        $sum = 0;
+
+                                        error_log(json_encode($paymentsId));
+
+                                        foreach ($paymentsId as $debt_id) {
+                                            $sum += Debt::find($debt_id)->total_cost;
+                                        }
+                                        $sum = $sum * 0.8;
+
+                                        $var = fn (callable $set) => $set('semester_amount', $sum);
+
+                                        error_log('I was here');
+                                    }
+
+
+
+                                    return $get('type') !== 'fee' && filled($get('semester_id'));
+                                })
                                 ->afterStateUpdated(fn (callable $set) => $set('amount', function (callable $get) {
                                     $paymentsId = $get('debt_ids');
+
                                     $sumAmount = 0;
-                                    assertIsArray($paymentsId);
                                     foreach ($paymentsId as $debtId) {
-                                        $sumAmount += Debt::find($debtId)->TotalCost;
+                                        $sumAmount += Debt::find($debtId)->total_cost;
                                     }
+
+
 
                                     return $sumAmount;
                                 }))
@@ -105,28 +188,31 @@ class BillResource extends Resource
                                 ->required()
                                 ->readOnly()
                                 ->reactive()
-                                ->numeric(),
-                            Select::make('payment_type')
-                                ->required()
-                                ->options([
-                                    'semestral',
-                                    'fee'
-                                ]),
+                                ->numeric()
+                                ->key('amount')
+                                ->label('Monto a pagar'),
                             TextInput::make('NIT')
                                 ->label('NIT')
-                                ->required(),
+                                ->required()
+                                ->numeric(),
                             TextInput::make('social_reazon')
-                                ->label('Social Reazon')
+                                ->label('Razon social')
                                 ->required(),
                             TextInput::make('bill_code')
                                 ->label('Bill Code')
                                 ->required()
                                 ->hidden(),
                             TextInput::make('total_paid')
-                                ->label('Total Paid')
+                                ->label('Pago en total')
                                 ->numeric()
                                 ->required()
-                                ->gte('amount'),
+                                ->gte('amount')
+                                ->validationMessages(
+                                    [
+                                        'gte' => 'Se debe pagar un monto mayor al monto a pagar'
+                                    ]
+                                )
+                                ->helperText('Incluye excedente que se devolvera como cambio'),
                             TextInput::make('change')
                                 ->label('Change')
                                 ->numeric()
@@ -144,15 +230,19 @@ class BillResource extends Resource
                 Tables\Columns\TextColumn::make('NIT')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('social_reazon')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Razon social'),
                 Tables\Columns\TextColumn::make('bill_code')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Codigo de factura'),
                 Tables\Columns\TextColumn::make('total_paid')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->label(' Pagado en total'),
                 Tables\Columns\TextColumn::make('change')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('cambio'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -180,6 +270,37 @@ class BillResource extends Resource
         return [
             //
         ];
+    }
+
+    public static function getNameOfStudent($student_id): string
+    {
+        $return_val = '';
+
+        $first_name = Person::find(Student::find($student_id)->person_id)->first_name;
+        $last_name = Person::find(Student::find($student_id)->person_id)->last_name;
+
+        $return_val = $first_name . ' ' . $last_name;
+
+        return $return_val;
+    }
+
+    public static function getStudentInfo($student_id): array
+    {
+        $return_array[] = [];
+
+        $return_array['names'] = BillResource::getNameOfStudent($student_id);
+        $return_array['career'] = Career::find(PaymentPlan::find(Student::find($student_id)->payment_plan_id)->career_id)->name;
+        $return_array['email'] = Person::find(Student::find($student_id)->person_id)->email;
+
+        return $return_array;
+    }
+
+    public static function getPaymentHasBeenMade($student_id, $semester_id): bool
+    {
+        $r_val = Payment::whereHas('debt', function ($query) use ($semester_id) {
+            $query->where('semester_id', $semester_id);
+        })->where('student_id', $student_id)->exists();
+        return $r_val;
     }
 
     public static function getPages(): array

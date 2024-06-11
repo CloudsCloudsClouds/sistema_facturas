@@ -19,13 +19,12 @@ use function PHPUnit\Framework\isTrue;
 
 class DebtResource extends Resource
 {
-    protected static ?string $model = Debt::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    protected static ?string $navigationLabel = 'Deudas';
+    protected static ?string $label = 'Deudas'; // Cambia el label
     public static function form(Form $form): Form
     {
-        //TODO
+
         return $form
             ->schema([
                 Forms\Components\Select::make('semester_id')
@@ -65,10 +64,12 @@ class DebtResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('semester.identifier')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('semestre'),
                 Tables\Columns\TextColumn::make('total_cost')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('costo'),
                 Tables\Columns\TextColumn::make('type'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

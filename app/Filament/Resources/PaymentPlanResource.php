@@ -18,9 +18,10 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class PaymentPlanResource extends Resource
 {
     protected static ?string $model = PaymentPlan::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+protected static ?string $navigationLabel = 'Planes de Pago';
+    protected static ?string $label = 'Planes de Pago'; // Cambia el label
+    protected static ?string $pluralLabel = 'Planes de Pago'; // Cambia el plural label
+        protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     public static function form(Form $form): Form
     {
         return $form
@@ -48,13 +49,16 @@ class PaymentPlanResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('career.name')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Carrera'),
                 Tables\Columns\TextColumn::make('term.period')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Gestion'),
                 Tables\Columns\TextColumn::make('tuition')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Matricula'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

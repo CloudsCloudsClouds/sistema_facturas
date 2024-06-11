@@ -19,6 +19,7 @@ return new class extends Migration
             $table->enum('type', ['Curso', 'Carrera']);
             $table->string('description');
             $table->tinyInteger('share');
+            $table->string('info')->virtualAs('concat(description, \' \', total_cost)');
             $table->timestamps();
         });
     }

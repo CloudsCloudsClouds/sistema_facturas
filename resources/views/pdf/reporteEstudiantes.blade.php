@@ -1,4 +1,3 @@
-
 <style>
     .contenedor {
     font-family: 'Arial', sans-serif;
@@ -99,42 +98,43 @@ footer {
         <div class="caja-reporte">
             <header>
                 <div class="logo">
-                    <img src="https://scontent.flpb3-2.fna.fbcdn.net/v/t39.30808-6/359830903_292716540085967_8746830458050815562_n.jpg?stp=dst-jpg_s960x960&_nc_cat=104&ccb=1-7&_nc_sid=5f2048&_nc_ohc=yUOZEUudjcsQ7kNvgG8r0kJ&_nc_ht=scontent.flpb3-2.fna&oh=00_AYBmY27DkaCsGy2uOTUBh-ckMYF4D9LpWzQ0zjlxeZ9JnA&oe=666178CA" alt="Logo de la Universidad">
+                    {{-- <img src="../../images/uni-logo1.png" alt="Universidad Franz Tamayo" /> --}}
+
+                    <img src="https://scontent.flpb3-2.fna.fbcdn.net/v/t39.jcsQ7kNvgG8r0kJ&_nc_ht=scontent.flpb3-2.fna&oh=00_AYBmY27DkaCsGy2uOTUBh-ckMYF4D9LpWzQ0zjlxeZ9JnA&oe=666178CA" alt="Logo de la Universidad">
                 </div>
                 <div class="titulo-reporte">
                     <h1>Universidad Franz Tamayo</h1>
-                    <p>Fecha: 01/06/2024</p>
-                   
+                    <p>Fecha: <?php echo date('d/m/Y'); ?></p>
+
                 </div>
             </header>
-           
+
             <section class="contenido-reporte">
                 <h2>Reporte de Estudiantes</h2>
                 <table>
                     <thead>
                         <tr>
-                            <th>Nombre</th>
-                            <th>Correo</th>
-                            <th>Codigo</th>
+                            <th>ID</th>
+                            <th>Nombre Completo</th>
+                            <th>Email</th>
+                            <th>Código</th>
+                            <th>Plan de Pago</th>
+
+
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach($estudiantes as $estudiante)
                         <tr>
-                            <td>Marta</td>
-                            <td>Marta@gmail.com</td>
-                            <td>SIS-12346548</td>
+                            <td>{{ $estudiante->id }}</td>
+                            <td>{{ $estudiante->first_name }} {{ $estudiante->second_name }} {{ $estudiante->middle_name }} {{ $estudiante->last_name }}</td>
+                            <td>{{ $estudiante->email }}</td>
+                            <td>{{ $estudiante->code }}</td>
+                            <td>{{ $estudiante->payment_plan_identifier }}</td>
+
+
                         </tr>
-                        <tr>
-                            <td>Marta</td>
-                            <td>Marta@gmail.com</td>
-                            <td>SIS-12346548</td>
-                        </tr>
-                        <tr>
-                            <td>Marta</td>
-                            <td>Marta@gmail.com</td>
-                            <td>SIS-12346548</td>
-                        </tr>
-                       
+                        @endforeach
                     </tbody>
                 </table>
             </section>

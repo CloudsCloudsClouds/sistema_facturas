@@ -20,19 +20,18 @@ class DatabaseSeeder extends Seeder
         // Crear usuarios
         User::factory(1)->create();
 
+        Person::factory(250)->create();
+
         // Llamar a los seeders específicos
         $this->call([
             CampusSeeder::class,
             CareerSeeder::class,
-        ]);
-
-        $this->call([
-            CareerSeeder::class,
             TermSeeder::class,
+            PaymentPlanSeeder::class,
         ]);
 
         // Crear personas (puede depender de User, Campus o Career)
-        Person::factory(250)->create();
+        Student::factory(250)->create();
 
         // Si Student depende de otros modelos, crea Student después de haber creado las dependencias
         // Student::factory(50)->create();

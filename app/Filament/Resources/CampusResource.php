@@ -15,9 +15,10 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CampusResource extends Resource
 {
-    protected static ?string $model = Campus::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+protected static ?string $navigationLabel = 'Sedes';
+    protected static ?string $label = 'Sedes'; // Cambia el label
+    protected static ?string $pluralLabel = 'Sedes'; // Cambia el plural label
+        protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
@@ -25,13 +26,16 @@ class CampusResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->label('Nombre'),
                 Forms\Components\Textarea::make('direction')
                     ->required()
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->label('Direccion'),
                 Forms\Components\TextInput::make('number')
                     ->maxLength(255)
-                    ->default(null),
+                    ->default(null)
+                    ->label('Numero'),
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
@@ -44,11 +48,14 @@ class CampusResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Nombre'),
                 Tables\Columns\TextColumn::make('number')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Numero'),
                 Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('email'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

@@ -19,8 +19,10 @@ class BillDataResource extends Resource
 {
     protected static ?string $model = BillData::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    protected static ?string $navigationLabel = 'Datos de la Factura';
+    protected static ?string $label = 'Datos de Factura'; // Cambia el label
+    protected static ?string $pluralLabel = 'Datos de Factura'; // Cambia el plural lab
+        protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     public static function form(Form $form): Form
     {
         return $form
@@ -28,11 +30,13 @@ class BillDataResource extends Resource
                 Forms\Components\Select::make('bill_id')
                     ->required()
                     ->options(Bill::all()->pluck('code', 'id'))
+                    ->label('Factura')
                     ->searchable(),
                 Forms\Components\Select::make('payment_id')
                     ->required()
                     ->options(Payment::all()->pluck('id', 'id'))
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Pago'),
             ]);
     }
 

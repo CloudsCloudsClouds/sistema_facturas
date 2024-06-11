@@ -16,9 +16,11 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class StudentResource extends Resource
 {
-    protected static ?string $model = Student::class;
-
+     protected static ?string $model = Student::class;
+    protected static ?string $label = 'Estudiantes'; // Cambia el label
+    protected static ?string $pluralLabel = 'Estudiantes'; // Cambia el plural label
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
 
     public static function form(Form $form): Form
     {
@@ -26,7 +28,8 @@ class StudentResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('code')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->label('Codigo') ,
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
@@ -34,11 +37,13 @@ class StudentResource extends Resource
                 Forms\Components\Select::make('person_id')
                     ->required()
                     ->relationship(name: 'person', titleAttribute: 'ci')
-                    ->searchable(['email'], ['ci']),
+                    ->searchable(['email'], ['ci'])
+                    ->label('CI de estudiante'),
                 Forms\Components\Select::make('payment_plan_id')
                     ->required()
                     ->options(PaymentPlan::all()->pluck('identifier', 'id'))
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Plan de pago'),
             ]);
     }
 
@@ -47,12 +52,14 @@ class StudentResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('code')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('codigo'),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('person.ci')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('CI'),
                 Tables\Columns\TextColumn::make('payment_plan.term.period')
                     ->numeric()
                     ->label('Inscrito en gestion:')
