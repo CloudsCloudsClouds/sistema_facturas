@@ -1,24 +1,30 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PaymentPlan extends Model
 {
     use HasFactory;
 
-    public function PaymentPlanDate(): BelongsToMany
+    public function students()
     {
-        return $this->belongsToMany(PaymentPlanData::class);
+        return $this->hasMany(Student::class);
     }
 
-    public function Management(): BelongsTo
+    public function semesters()
     {
-        return $this->belongsTo(Management::class);
+        return $this->hasMany(Semester::class);
+    }
+
+    public function career()
+    {
+        return $this->belongsTo(Career::class);
+    }
+
+    public function term()
+    {
+        return $this->belongsTo(Term::class);
     }
 }

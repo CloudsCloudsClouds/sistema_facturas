@@ -16,14 +16,23 @@ Estos son los pasos para hacer funcionar el proyecto:
 
 Este proyecto usa filament! Es para hacer datos y todo mas rapido.
 
+##### Crear un nuevo usuario
 - Crea un usuario de filament. Has esto usando `php artisan make:filament-user`
 - Corre `php artisan serve`
 - Ve al link `localhost:8000/admin`
 
-Ingresa el usuario que acabas de crear. 
-El sistema (deberia) funciona. 
+**El sistema ya tiene un usuario incluido. EMAIL:`admin@unifranz.com` / CONTRASEÑA:`1234`**
 
-### ¡Sobre la base de datos!
+Crear un usuario es opcional
+
+---
+
+Ingresa el usuario que usaras en el sistema. 
+
+El sistema (deberia) funcionar. 
+
+---
+## ¡Sobre la base de datos!
 Ya hay algunos factories and seeders puestos en marcha para crear algunos datos.
 Debes correr:
     

@@ -10,10 +10,13 @@ class ListBillData extends ListRecords
 {
     protected static string $resource = BillDataResource::class;
 
-    protected function getHeaderActions(): array
+    public function canCreate()
     {
-        return [
-            Actions\CreateAction::make(),
-        ];
+        return false;
+    }
+
+    public function canEdit()
+    {
+        return false;
     }
 }

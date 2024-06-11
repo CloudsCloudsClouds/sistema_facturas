@@ -1,25 +1,20 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 
 class Career extends Model
 {
     use HasFactory;
 
-    public function Campus(): HasOne
+    public function paymentPlans()
     {
-        return $this->hasOne(Campus::class);
+        return $this->hasMany(PaymentPlan::class);
     }
 
-    public function Managements(): BelongsToMany
+    public function campus()
     {
-        return $this->belongsToMany(Management::class);
+        return $this->belongsTo(Campus::class);
     }
 }

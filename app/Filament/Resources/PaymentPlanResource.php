@@ -4,7 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PaymentPlanResource\Pages;
 use App\Filament\Resources\PaymentPlanResource\RelationManagers;
+use App\Models\Career;
 use App\Models\PaymentPlan;
+use App\Models\Term;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,22 +18,27 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class PaymentPlanResource extends Resource
 {
     protected static ?string $model = PaymentPlan::class;
-    protected static ?string $navigationLabel = 'Plan de pagos';
 
-    protected static ?string $navigationIcon = 'heroicon-o-wallet';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('career_id')
+                    ->required()
+                    ->options(Career::all()->pluck('name', 'id'))
+                    ->searchable(),
+                Forms\Components\Select::make('term_id')
+                    ->required()
+                    ->options(Term::all()->pluck('period', 'id'))
+                    ->searchable(),
                 Forms\Components\TextInput::make('tuition')
-                ->label('Matricula')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('credit')
-                ->label('Credito')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\TextInput::make('identifier')
+                    ->label('Identifier')
+                    ->hidden(),
             ]);
     }
 
@@ -39,10 +46,13 @@ class PaymentPlanResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('tuition')
+                Tables\Columns\TextColumn::make('career.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('credit')
+                Tables\Columns\TextColumn::make('term.period')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('tuition')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

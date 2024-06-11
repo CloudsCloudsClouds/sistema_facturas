@@ -22,6 +22,7 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+
         return $panel
             ->default()
             ->id('admin')
@@ -31,10 +32,10 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::hex('#ff6d0b'),
             ])
             ->font('Nunito')
-            ->brandLogo(url('/images/uni-logo1.png'))
-            ->brandLogoHeight('65px')
-            
 
+            ->brandLogo(url('/images/logo-light.png'))
+            ->darkModeBrandLogo(url('/images/logo-dark.png'))
+            ->brandLogoHeight('55px')
 
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
@@ -44,8 +45,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                //Widgets\AccountWidget::class,
+                //Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,

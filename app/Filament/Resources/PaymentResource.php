@@ -5,8 +5,6 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\PaymentResource\Pages;
 use App\Filament\Resources\PaymentResource\RelationManagers;
 use App\Models\Payment;
-use App\Models\PaymentPlanData;
-use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -18,29 +16,25 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class PaymentResource extends Resource
 {
     protected static ?string $model = Payment::class;
-    protected static ?string $navigationLabel = 'Pagos';
 
-    protected static ?string $navigationIcon = 'heroicon-o-credit-card';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('student_id')
-                ->label('Estudiante')
-                    ->required()
-                    ->options(Student::all()->pluck('code', 'id'))
-                    ->searchable(),
-                Forms\Components\Select::make('payment_plan_data_id')
-                ->label('Datos de Plan de Pago')
-                    ->required()
-                    ->options(PaymentPlanData::all()->pluck('id', 'id'))
-                    ->searchable(),
-                Forms\Components\TextInput::make('ammount_payed')
-                ->label('Monto de Pago')
+                Forms\Components\TextInput::make('type')
+                    ->required(),
+                Forms\Components\TextInput::make('ammount')
                     ->required()
                     ->numeric(),
-                Forms\Components\DatePicker::make('date')
+                Forms\Components\TextInput::make('debt_id')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('student_id')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\DateTimePicker::make('date_of_payment')
                     ->required(),
             ]);
     }
@@ -49,17 +43,18 @@ class PaymentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('student_id')
+                Tables\Columns\TextColumn::make('type'),
+                Tables\Columns\TextColumn::make('ammount')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('payment_plan_data_id')
+                Tables\Columns\TextColumn::make('debt.description')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('ammount_payed')
+                Tables\Columns\TextColumn::make('student.code')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('date')
-                    ->date()
+                Tables\Columns\TextColumn::make('date_of_payment')
+                    ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

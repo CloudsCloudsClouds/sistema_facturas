@@ -4,8 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource\RelationManagers;
-use App\Models\Management;
-use App\Models\Person;
+use App\Models\PaymentPlan;
 use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -18,32 +17,28 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class StudentResource extends Resource
 {
     protected static ?string $model = Student::class;
-    protected static ?string $navigationLabel = 'Estudiantes';
 
-    protected static ?string $navigationIcon = 'heroicon-o-identification';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('person_id')
-                ->label('Persona Id')
+                Forms\Components\TextInput::make('code')
                     ->required()
-                    ->options(Person::all()->pluck('ci', 'id'))
-                    ->searchable(),
-                Forms\Components\Select::make('management_id')
-                ->label('Identificador')
-                    ->required()
-                    ->options(Management::all()->pluck('management', 'id'))
-                    ->searchable(),
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('code')
-                ->label('Codigo')
+                Forms\Components\Select::make('person_id')
                     ->required()
-                    ->maxLength(255),
+                    ->relationship(name: 'person', titleAttribute: 'ci')
+                    ->searchable(['email'], ['ci']),
+                Forms\Components\Select::make('payment_plan_id')
+                    ->required()
+                    ->options(PaymentPlan::all()->pluck('identifier', 'id'))
+                    ->searchable(),
             ]);
     }
 
@@ -51,14 +46,17 @@ class StudentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('person.ci')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('management.career.name')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('code')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('person.ci')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('payment_plan.term.period')
+                    ->numeric()
+                    ->label('Inscrito en gestion:')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

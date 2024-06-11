@@ -19,22 +19,19 @@ class BillDataResource extends Resource
 {
     protected static ?string $model = BillData::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
-    protected static ?string $navigationLabel = 'Datos de Factura';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('payment_id')
-                ->label('id de pago')
+                Forms\Components\Select::make('bill_id')
                     ->required()
-                    ->options(Payment::all()->pluck('id'. 'id'))
+                    ->options(Bill::all()->pluck('code', 'id'))
                     ->searchable(),
-                Forms\Components\Select::make('bill_data')
-                ->label('Datos de Factura')
+                Forms\Components\Select::make('payment_id')
                     ->required()
-                    ->options(Bill::all()->pluck('bill_code', 'id'))
+                    ->options(Payment::all()->pluck('id', 'id'))
                     ->searchable(),
             ]);
     }
@@ -43,12 +40,7 @@ class BillDataResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('payment_id')
-                ->label('Id de pago')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('bill_data')
-                ->label('Datos de factura')
+                Tables\Columns\TextColumn::make('bill.NIT')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

@@ -4,25 +4,38 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Payment extends Model
 {
     use HasFactory;
 
-    public function Student(): HasOne
+
+    public static function boot()
     {
-        return $this->hasOne(Student::class);
+        parent::boot();
+
+        static::creating(function ($paymentPlan) {
+            $career = Career::find($paymentPlan->career_id);
+            $term = Term::find($paymentPlan->term_id);
+
+            if ($career && $term) {
+                $paymentPlan->identifier = $career->name + ' ' + $term->period;
+            }
+        });
     }
 
-    public function BillData(): BelongsTo
+    public function debt()
     {
-        return $this->belongsTo(BillData::class);
+        return $this->belongsTo(Debt::class);
     }
 
-    public function PaymentPlanData(): HasOne
+    public function student()
     {
-        return $this->hasOne(PaymentPlanData::class);
+        return $this->belongsTo(Student::class);
+    }
+
+    public function billData()
+    {
+        return $this->hasMany(BillData::class);
     }
 }
