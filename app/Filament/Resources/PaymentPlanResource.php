@@ -27,18 +27,21 @@ protected static ?string $navigationLabel = 'Planes de Pago';
         return $form
             ->schema([
                 Forms\Components\Select::make('career_id')
+                ->label('Carrera')
                     ->required()
                     ->options(Career::all()->pluck('name', 'id'))
                     ->searchable(),
                 Forms\Components\Select::make('term_id')
+                ->label('Termino')
                     ->required()
                     ->options(Term::all()->pluck('period', 'id'))
                     ->searchable(),
                 Forms\Components\TextInput::make('tuition')
+                ->label('Gestion')
                     ->required()
                     ->numeric(),
                 Forms\Components\TextInput::make('identifier')
-                    ->label('Identifier')
+                    ->label('Identificador')
                     ->hidden(),
             ]);
     }

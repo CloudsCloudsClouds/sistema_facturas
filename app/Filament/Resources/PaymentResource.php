@@ -26,17 +26,22 @@ class PaymentResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('type')
+                ->label('Tipo')
                     ->required(),
                 Forms\Components\TextInput::make('ammount')
+                ->label('Monto')
                     ->required()
                     ->numeric(),
                 Forms\Components\TextInput::make('debt_id')
+                ->label('Deuda')
                     ->required()
                     ->numeric(),
                 Forms\Components\TextInput::make('student_id')
+                ->label('Estidiante')
                     ->required()
                     ->numeric(),
                 Forms\Components\DateTimePicker::make('date_of_payment')
+                ->label('Fecha de pago')
                     ->required(),
             ]);
     }
@@ -45,17 +50,22 @@ class PaymentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('type'),
+                Tables\Columns\TextColumn::make('type')
+                ->label('Tipo'),
                 Tables\Columns\TextColumn::make('ammount')
+                ->label('Cantidad')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('debt.description')
+                ->label('Descripcion de deuda')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('student.code')
+                ->label('Estudiante')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('date_of_payment')
+                ->label('Fecha de pago')
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

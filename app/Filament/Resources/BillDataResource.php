@@ -28,11 +28,13 @@ class BillDataResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('bill_id')
+                    ->label('Factura_id')
                     ->required()
                     ->options(Bill::all()->pluck('code', 'id'))
                     ->label('Factura')
                     ->searchable(),
                 Forms\Components\Select::make('payment_id')
+                     ->label('Pago_id')
                     ->required()
                     ->options(Payment::all()->pluck('id', 'id'))
                     ->searchable()
@@ -45,6 +47,7 @@ class BillDataResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('bill.NIT')
+                ->label('NIT')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

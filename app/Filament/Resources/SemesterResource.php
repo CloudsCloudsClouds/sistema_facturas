@@ -27,15 +27,17 @@ class SemesterResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('term_id')
+                ->label('Termino')
                     ->required()
                     ->options(Term::all()->pluck('period', 'id'))
                     ->searchable(),
                 Forms\Components\Select::make('payment_plan_id')
+                ->label('Plan de pago')
                     ->required()
                     ->options(PaymentPlan::all()->pluck('identifier', 'id'))
                     ->searchable(),
                 Forms\Components\TextInput::make('identifier')
-                    ->label('Identifier')
+                    ->label('Identificador')
                     ->hidden(),
             ]);
     }
@@ -45,8 +47,10 @@ class SemesterResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('term.period')
+                ->label('Termino')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('identifier')
+                ->label('Identificador')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
