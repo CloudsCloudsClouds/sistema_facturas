@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CareerResource\Pages;
 use App\Filament\Resources\CareerResource\RelationManagers;
+use App\Models\Campus;
 use App\Models\Career;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -23,18 +24,23 @@ class CareerResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('campus_id')
+                Forms\Components\Select::make('campus_id')
                     ->required()
-                    ->numeric(),
+                    ->options(
+                        Campus::all()->pluck('name', 'id')
+                    )
+                    ->searchable(),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('duration')
                     ->required()
-                    ->numeric(),
+                    ->numeric()
+                    ->maxValue(12),
                 Forms\Components\TextInput::make('number')
                     ->maxLength(255)
-                    ->default(null),
+                    ->numeric()
+                    ->tel(),
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()

@@ -22,11 +22,13 @@ class DebtResource extends Resource
 
     public static function form(Form $form): Form
     {
+        //TODO
         return $form
             ->schema([
                 Forms\Components\Select::make('semester_id')
                     ->required()
-                    ->options(Semester::all()->pluck('identifier', 'id')),
+                    ->options(Semester::all()->pluck('identifier', 'id'))
+                    ->searchable(),
                 Forms\Components\TextInput::make('TotalCost')
                     ->required()
                     ->numeric(),

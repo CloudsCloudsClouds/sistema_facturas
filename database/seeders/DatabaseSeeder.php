@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-
 use App\Models\Campus;
 use App\Models\Career;
 use App\Models\Person;
@@ -18,15 +16,25 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-        Person::factory(250)->create();
+        // Crear usuarios
         User::factory(1)->create();
-        Campus::factory(1)->create();
-        Career::factory(1)->create();
+
+         // Llamar a los seeders específicos
+         $this->call([
+            CampusSeeder::class,
+            CareerSeeder::class,
+        ]);
+
+        $this->call([
+            CareerSeeder::class,
+            // otros seeders si los tienes
+        ]);
+
+        // Crear personas (puede depender de User, Campus o Career)
+        Person::factory(250)->create();
+
+        // Si Student depende de otros modelos, crea Student después de haber creado las dependencias
+        // Student::factory(50)->create();
     }
 }
+

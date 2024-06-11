@@ -47,10 +47,10 @@ class PaymentResource extends Resource
                 Tables\Columns\TextColumn::make('ammount')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('debt_id')
+                Tables\Columns\TextColumn::make('debt.description')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('student_id')
+                Tables\Columns\TextColumn::make('student.code')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('date_of_payment')

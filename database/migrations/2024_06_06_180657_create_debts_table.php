@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignIdFor(Semester::class)->constrained()->cascadeOnDelete();
             $table->unsignedFloat('TotalCost');
             $table->enum('type', ['Course', 'Credit']);
+            $table->string('description');
             $table->timestamps();
         });
     }
