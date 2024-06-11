@@ -17,7 +17,7 @@ class TermResource extends Resource
 {
     protected static ?string $model = Term::class;
 
-        protected static ?string $navigationLabel = 'Gestion';
+    protected static ?string $navigationLabel = 'Gestion';
     protected static ?string $label = 'Gestion';
     protected static ?string $pluralLabel = 'Gestiones';
     protected static ?string $navigationIcon = 'heroicon-o-user';
