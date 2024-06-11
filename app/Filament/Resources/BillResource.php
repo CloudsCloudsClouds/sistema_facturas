@@ -66,16 +66,19 @@ class BillResource extends Resource
                                     $set('student_email', $info['email']);
                                 }),
                             TextInput::make('student_name')
+                            ->label('Nombre del estudiante')
                                 ->label('Nombre del Estudiante')
                                 ->readOnly()
                                 ->reactive()
                                 ->hidden(fn (callable $get) => !filled($get('student_id'))),
                             TextInput::make('student_career')
+                            ->label('Carrera')
                                 ->label('Estudiante de')
                                 ->readOnly()
                                 ->reactive()
                                 ->hidden(fn (callable $get) => !filled($get('student_id'))),
                             TextInput::make('student_email')
+                            ->label('email')
                                 ->label('Email del estudiante')
                                 ->reactive()
                                 ->readOnly()
@@ -101,6 +104,7 @@ class BillResource extends Resource
                                     $set('type', 'fee');
                                 }),
                             Select::make('type')
+                            ->label('tipo')
                                 ->options([
                                     'semestral' => 'Semestral',
                                     'fee' => 'Cuota',
@@ -186,6 +190,7 @@ class BillResource extends Resource
                     Step::make('Pago')
                         ->schema([
                             TextInput::make('amount')
+                            ->label('Monto')
                                 ->required()
                                 ->readOnly()
                                 ->reactive()
@@ -200,7 +205,7 @@ class BillResource extends Resource
                                 ->label('Razon social')
                                 ->required(),
                             TextInput::make('bill_code')
-                                ->label('Bill Code')
+                                ->label('Pago_id')
                                 ->required()
                                 ->hidden(),
                             TextInput::make('total_paid')
@@ -215,7 +220,7 @@ class BillResource extends Resource
                                 )
                                 ->helperText('Incluye excedente que se devolvera como cambio'),
                             TextInput::make('change')
-                                ->label('Change')
+                                ->label('Cambio')
                                 ->numeric()
                                 ->hidden()
                                 ->default(0)
@@ -231,12 +236,14 @@ class BillResource extends Resource
                 Tables\Columns\TextColumn::make('NIT')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('social_reazon')
+                
                     ->searchable()
                     ->label('Razon social'),
                 Tables\Columns\TextColumn::make('bill_code')
                     ->searchable()
                     ->label('Codigo de factura'),
                 Tables\Columns\TextColumn::make('total_paid')
+               
                     ->numeric()
                     ->sortable()
                     ->label(' Pagado en total'),
