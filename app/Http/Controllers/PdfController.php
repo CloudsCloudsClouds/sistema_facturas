@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bill;
 use App\Models\Campus;
 use App\Models\Career;
+use App\Models\PaymentPlan;
 use App\Models\Person;
 use App\Models\Student;
 use App\Models\User;
@@ -28,7 +29,7 @@ class PdfController extends Controller
         $personas = Person::all();
 
         $pdf = Pdf::loadView('pdf.reportePersona', ['personas' => $personas]);
-        return $pdf->download('reportePersona.pdf');
+        return $pdf->stream('reportePersona.pdf');
     }
 
 
@@ -61,7 +62,7 @@ class PdfController extends Controller
             ->get();
 
         $pdf = PDF::loadView('pdf.reporteEstudiantes', ['estudiantes' => $estudiantes]);
-        return $pdf->download('reporteEstudiantes.pdf');
+        return $pdf->stream('reporteEstudiantes.pdf');
     }
 
     public function reporteSucursales()
@@ -69,7 +70,7 @@ class PdfController extends Controller
         $campuses = Campus::all();
 
         $pdf = Pdf::loadView('pdf.reporteSucursales', ['campuses' => $campuses]);
-        return $pdf->download('reporteSucursales.pdf');
+        return $pdf->stream('reporteSucursales.pdf');
     }
 
     // public function reporteCarreras()
@@ -88,7 +89,7 @@ class PdfController extends Controller
             ->get();
 
         $pdf = PDF::loadView('pdf.reporteCarreras', ['carreras' => $carreras]);
-        return $pdf->download('reporteCarreras.pdf');
+        return $pdf->stream('reporteCarreras.pdf');
     }
 
 
@@ -97,11 +98,41 @@ class PdfController extends Controller
 
     public function factura($id)
     {
-        $bills = Bill::find($id);
+        $bill = Bill::find($id);
 
-        // return $bills;
+        if (!$bill) {
+            return redirect()->back()->with('error', 'Factura no encontrada');
+        }
 
-        $pdf = Pdf::loadView('pdf.factura', ['bills' => $bills]);
-        return $pdf->download('factura.pdf');
+        $payments = $bill->billData->map(function ($billData) {
+            return $billData->payment;
+        });
+
+        if ($payments->isEmpty()) {
+            return redirect()->back()->with('error', 'No hay pagos asociados a esta factura');
+        }
+
+        $student = $payments->first()->student;
+
+        if (!$student) {
+            return redirect()->back()->with('error', 'Estudiante no encontrado');
+        }
+
+        $person = Person::where('id', $student->person_id)->first();
+        $paymentPlan = PaymentPlan::find($student->payment_plan_id);
+
+        if (!$paymentPlan) {
+            return redirect()->back()->with('error', 'Plan de pago no encontrado');
+        }
+
+        $career = Career::find($paymentPlan->career_id);
+
+        if (!$career) {
+            return redirect()->back()->with('error', 'Carrera no encontrada');
+        }
+
+        $pdf = Pdf::loadView('pdf.factura', compact('bill', 'student', 'career', 'payments', 'person'));
+
+        return $pdf->stream('factura.pdf');
     }
 }

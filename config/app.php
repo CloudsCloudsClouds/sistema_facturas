@@ -90,7 +90,7 @@ return [
     | Application Fallback Locale
     |--------------------------------------------------------------------------
     |
-    | The fallback locale determines the locale to use when the current one
+    | The fallback locale determines the locale to use when the current oneBarryvdh\DomPDF\ServiceProvider::class,
     | is not available. You may change the value to correspond to any of
     | the language folders that are provided through your application.
     |
@@ -169,6 +169,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\Filament\AdminPanelProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
     ])->toArray(),
 
     /*

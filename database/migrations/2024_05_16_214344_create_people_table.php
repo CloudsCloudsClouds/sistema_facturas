@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('direction');
             $table->string('email');
             $table->string('ci');
+            $table->string('name')->virtual('concat(first_name \' \' middle_name')')
             $table->timestamps();
         });
     }

@@ -25,6 +25,7 @@ use Filament\Tables\Table;
 use App\Models\PaymentPlan;
 use App\Models\Person;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -256,7 +257,15 @@ class BillResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('createPDF')
+                    ->link()
+                    ->action(function (Bill $record)
+                    {
+                        return redirect()->route('pdf.factura', $record->id);
+                        }
+                    )
+                    ->label('Exportar factura a PDF')
+                    ->icon('heroicon-m-pencil-square'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

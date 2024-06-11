@@ -34,4 +34,4 @@ Route::get('/pdf/reporte-carreras', [PdfController::class, 'reporteCarreras'])->
 
 
 
-Route::get('download/{id}',[PdfController::class, 'factura'])->name('factura.pdf');
+Route::get('/pdf/reporte-factura/{id}',[PdfController::class, 'factura'])->name('pdf.factura');
